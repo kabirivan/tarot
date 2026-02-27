@@ -906,6 +906,9 @@ video {
 .-inset-20 {
   inset: -5rem;
 }
+.inset-\[4px\] {
+  inset: 4px;
+}
 .bottom-4 {
   bottom: 1rem;
 }
@@ -1087,6 +1090,9 @@ video {
 .h-full {
   height: 100%;
 }
+.h-16 {
+  height: 4rem;
+}
 .max-h-\[75vh\] {
   max-height: 75vh;
 }
@@ -1185,6 +1191,9 @@ video {
 }
 .max-w-lg {
   max-width: 32rem;
+}
+.max-w-sm {
+  max-width: 24rem;
 }
 .flex-1 {
   flex: 1 1 0%;
@@ -1492,6 +1501,9 @@ video {
 }
 .bg-\[radial-gradient\(ellipse_at_right\2c _rgba\(236\2c 72\2c 153\2c 0\.2\)\2c transparent_60\%\)\] {
   background-image: radial-gradient(ellipse at right, rgba(236,72,153,0.2),transparent 60%);
+}
+.bg-\[radial-gradient\(circle_at_30\%_20\%\2c rgba\(245\2c 158\2c 11\2c 0\.18\)\2c transparent_60\%\)\] {
+  background-image: radial-gradient(circle at 30% 20%,rgba(245,158,11,0.18),transparent 60%);
 }
 .from-dark-surface\/40 {
   --tw-gradient-from: rgb(30 27 75 / 0.4) var(--tw-gradient-from-position);
@@ -1936,6 +1948,11 @@ video {
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+.shadow-md {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
 .shadow-black\/40 {
   --tw-shadow-color: rgb(0 0 0 / 0.4);
   --tw-shadow: var(--tw-shadow-colored);
@@ -2011,6 +2028,9 @@ video {
 }
 .duration-500 {
   transition-duration: 500ms;
+}
+.duration-150 {
+  transition-duration: 150ms;
 }
 
 :root {
@@ -2167,6 +2187,11 @@ video {
 .active\:scale-\[0\.98\]:active {
   --tw-scale-x: 0.98;
   --tw-scale-y: 0.98;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.active\:scale-\[0\.97\]:active {
+  --tw-scale-x: 0.97;
+  --tw-scale-y: 0.97;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .disabled\:opacity-60:disabled {
