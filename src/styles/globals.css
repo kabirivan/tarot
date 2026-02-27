@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #8B5CF6;
+  --secondary: #F59E0B;
+  --accent: #EC4899;
+  --dark: #0F0A1F;
+  --dark-surface: #1E1B4B;
+  --light: #FAF8FF;
+  --success: #10B981;
+  --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  --gradient-dark: linear-gradient(180deg, #0F0A1F 0%, #1E1B4B 100%);
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+  body {
+    @apply bg-dark text-light min-h-screen;
+    background-image: var(--gradient-dark);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300;
+    background: var(--gradient-primary);
+    @apply hover:opacity-90 hover:scale-[1.02] active:scale-[0.98];
+  }
+  .card-surface {
+    @apply bg-dark-surface/80 backdrop-blur-sm border border-white/10 rounded-2xl;
+  }
+}
+
+@import './holographic.css';
+@import './animations.css';
