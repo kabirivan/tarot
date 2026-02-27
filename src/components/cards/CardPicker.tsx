@@ -65,8 +65,9 @@ export function CardPicker({
 
   useEffect(() => {
     if (typeof globalThis === "undefined") return;
-    if (typeof (globalThis as typeof Window).matchMedia !== "function") return;
-    const mq = (globalThis as typeof Window).matchMedia("(max-width: 640px)");
+    const g = globalThis as unknown as Window & typeof globalThis;
+    if (typeof g.matchMedia !== "function") return;
+    const mq = g.matchMedia("(max-width: 640px)");
     const update = () => setIsMobile(mq.matches);
     update();
     mq.addEventListener("change", update);
