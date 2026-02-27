@@ -3,6 +3,8 @@
 import { useCallback, useState } from "react";
 import type { ReadingCard, SpreadType } from "@/types/tarot";
 
+const FETCH_TIMEOUT_MS = 60000;
+
 export function useInterpretation() {
   const [interpretation, setInterpretation] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -17,6 +19,9 @@ export function useInterpretation() {
       setLoading(true);
       setError(null);
       setInterpretation(null);
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
       try {
         const payload = {
@@ -36,18 +41,33 @@ export function useInterpretation() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
+          signal: controller.signal,
         });
 
-        const data = await res.json();
+        clearTimeout(timeoutId);
+
+        const contentType = res.headers.get("content-type");
+        const isJson = contentType?.includes("application/json");
+        const data = isJson ? await res.json() : { error: "Respuesta inválida del servidor." };
 
         if (!res.ok) {
-          setError(data.error ?? "Error al interpretar.");
+          setError(typeof data?.error === "string" ? data.error : "Error al interpretar.");
           return;
         }
 
-        setInterpretation(data.interpretation);
-      } catch {
-        setError("No se pudo conectar con el servidor.");
+        const text = data?.interpretation;
+        setInterpretation(typeof text === "string" && text.trim() ? text : "No se pudo generar la interpretación.");
+      } catch (err) {
+        clearTimeout(timeoutId);
+        if (err instanceof Error) {
+          if (err.name === "AbortError") {
+            setError("La petición tardó demasiado. Reintenta.");
+          } else {
+            setError("No se pudo conectar con el servidor.");
+          }
+        } else {
+          setError("No se pudo conectar con el servidor.");
+        }
       } finally {
         setLoading(false);
       }

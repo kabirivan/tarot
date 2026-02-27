@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useCallback } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
 import type { TarotCard } from "@/types/tarot";
@@ -14,9 +14,9 @@ interface HolographicCardProps {
 }
 
 const sizeClasses = {
-  sm: "w-20 h-[140px] sm:w-24 sm:h-[168px]",
-  md: "w-28 h-[196px] sm:w-36 sm:h-[252px]",
-  lg: "w-36 h-[252px] sm:w-44 sm:h-[308px]",
+  sm: "w-24 h-[156px] sm:w-28 sm:h-[182px]",
+  md: "w-32 h-[220px] sm:w-40 sm:h-[275px]",
+  lg: "w-44 h-[302px] sm:w-52 sm:h-[357px]",
 };
 
 export function HolographicCard({
@@ -26,41 +26,53 @@ export function HolographicCard({
   className,
   size = "md",
 }: HolographicCardProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    setMouse({ x, y });
-  };
-
-  const handleMouseLeave = () => setMouse({ x: 0.5, y: 0.5 });
-
+  const cardRef = useRef<HTMLDivElement>(null);
   const displayName = card.nameEs ?? card.name;
-  const meaning = card.reversedDrawn ? card.reversed : card.upright;
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) / rect.width;
+    const my = (e.clientY - rect.top) / rect.height;
+    const ry = (mx - 0.5) * 16;
+    const rx = (my - 0.5) * -16;
+
+    el.style.setProperty("--mx", mx.toFixed(3));
+    el.style.setProperty("--my", my.toFixed(3));
+    el.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+    el.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.setProperty("--mx", "0.5");
+    el.style.setProperty("--my", "0.5");
+    el.style.setProperty("--rx", "0deg");
+    el.style.setProperty("--ry", "0deg");
+  }, []);
 
   return (
     <div
-      ref={ref}
+      ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
       className={cn(
-        "relative rounded-xl overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.03] holographic holographic-glow",
+        "holo-card cursor-pointer",
+        size === "lg" && "holo-card-lg",
         sizeClasses[size],
         className
       )}
-      style={{
-        transform: `perspective(800px) rotateX(${(mouse.y - 0.5) * -8}deg) rotateY(${(mouse.x - 0.5) * 8}deg)`,
-      }}
     >
-      <div className="holographic-card-inner absolute inset-0 card-surface flex flex-col items-center justify-center p-2">
+      <div className="holo-sparkle" />
+      <div className="holo-border" />
+
+      <div className="holo-content bg-dark-surface flex flex-col items-center justify-center p-2">
         {revealed ? (
           <>
-            <div className="relative w-full h-full min-h-[80%] rounded-lg overflow-hidden bg-dark/50">
+            <div className="relative w-full flex-1 min-h-0 rounded-lg overflow-hidden bg-dark/60">
               <Image
                 src={card.image}
                 alt={displayName}
@@ -69,7 +81,7 @@ export function HolographicCard({
                   "object-contain",
                   card.reversedDrawn && "rotate-180"
                 )}
-                sizes="(max-width: 640px) 144px, 176px"
+                sizes="(max-width: 640px) 160px, 192px"
                 unoptimized
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
@@ -77,18 +89,19 @@ export function HolographicCard({
                   const parent = target.parentElement;
                   if (parent) {
                     const fallback = document.createElement("div");
-                    fallback.className = "absolute inset-0 flex items-center justify-center text-center text-xs font-medium text-primary px-1";
+                    fallback.className =
+                      "absolute inset-0 flex items-center justify-center text-center text-xs font-medium text-primary px-2";
                     fallback.textContent = displayName;
                     parent.appendChild(fallback);
                   }
                 }}
               />
             </div>
-            <p className="text-[10px] sm:text-xs text-center text-white/90 mt-1 truncate w-full">
+            <p className="text-[10px] sm:text-xs text-center text-white/90 mt-1.5 truncate w-full font-medium">
               {displayName}
             </p>
             {card.reversedDrawn && (
-              <span className="text-[9px] text-accent">Invertida</span>
+              <span className="text-[9px] text-accent font-medium">Invertida</span>
             )}
           </>
         ) : (

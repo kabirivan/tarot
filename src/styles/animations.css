@@ -3,14 +3,54 @@
   50% { transform: translateY(-10px); }
 }
 
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+
 @keyframes fade-in {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes flip-in {
   from { transform: rotateY(-90deg); opacity: 0; }
   to { transform: rotateY(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.6), 0 0 60px rgba(236, 72, 153, 0.3);
+  }
+}
+
+@keyframes orb-pulse {
+  0%, 100% {
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.4), 0 0 80px rgba(139, 92, 246, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 70px rgba(139, 92, 246, 0.7), 0 0 120px rgba(236, 72, 153, 0.4);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.3); }
 }
 
 @keyframes particle-float {
@@ -24,14 +64,67 @@
   }
 }
 
+@keyframes card-rise {
+  from { opacity: 0; transform: translateY(40px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes hero-glow {
+  0% {
+    transform: translate3d(-10%, -10%, 0) scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(10%, 5%, 0) scale(1.08);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(-10%, -10%, 0) scale(1);
+    opacity: 0.45;
+  }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 5s ease-in-out infinite;
 }
 
 .animate-fade-in {
   animation: fade-in 0.4s ease-out forwards;
 }
 
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
 .animate-flip-in {
   animation: flip-in 0.5s ease-out forwards;
+}
+
+.animate-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-orb-pulse {
+  animation: orb-pulse 3s ease-in-out infinite;
+}
+
+.animate-star-twinkle {
+  animation: star-twinkle 2s ease-in-out infinite;
+}
+
+.animate-card-rise {
+  animation: card-rise 0.6s ease-out forwards;
+}
+
+.animate-hero-glow {
+  animation: hero-glow 18s ease-in-out infinite;
 }

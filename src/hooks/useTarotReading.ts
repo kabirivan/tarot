@@ -6,11 +6,12 @@ import { spreadPositions, spreadSizes } from "@/lib/cards/spreads";
 import { useReadingsStore } from "@/lib/store/readingsStore";
 import type { ReadingCard, SpreadType, TarotCard } from "@/types/tarot";
 
-export type ReadingPhase = "idle" | "shuffling" | "picking" | "revealed";
+export type ReadingPhase = "idle" | "shuffling" | "picking" | "revealing" | "revealed";
 
 export function useTarotReading(spreadType: SpreadType) {
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
   const [selectedCards, setSelectedCards] = useState<ReadingCard[]>([]);
+  const [pickedVisualIndices, setPickedVisualIndices] = useState<number[]>([]);
   const [phase, setPhase] = useState<ReadingPhase>("idle");
   const addReading = useReadingsStore((s) => s.addReading);
 
@@ -22,19 +23,21 @@ export function useTarotReading(spreadType: SpreadType) {
   const startReading = useCallback(() => {
     setPhase("shuffling");
     setSelectedCards([]);
+    setPickedVisualIndices([]);
     const shuffled = shuffleArray([...fullDeck]);
     setTimeout(() => {
       setShuffledDeck(shuffled);
       setPhase("picking");
-    }, 1200);
+    }, 1400);
   }, []);
 
   const pickCard = useCallback(
-    (deckIndex: number) => {
+    (visualIndex: number) => {
       if (phase !== "picking" || isComplete) return;
-      const card = shuffledDeck[deckIndex];
+      if (pickedVisualIndices.includes(visualIndex)) return;
+
+      const card = shuffledDeck[visualIndex];
       if (!card) return;
-      if (selectedCards.some((rc) => rc.card.id === card.id)) return;
 
       const posIndex = selectedCards.length;
       const reversed = Math.random() > 0.5;
@@ -45,14 +48,21 @@ export function useTarotReading(spreadType: SpreadType) {
       };
 
       const newCards = [...selectedCards, reading];
+      const newIndices = [...pickedVisualIndices, visualIndex];
       setSelectedCards(newCards);
+      setPickedVisualIndices(newIndices);
 
       if (newCards.length >= totalNeeded) {
-        setTimeout(() => setPhase("revealed"), 600);
+        // Transición inmediata a revealing para que el modal se muestre en el mismo ciclo
+        setPhase("revealing");
       }
     },
-    [phase, isComplete, shuffledDeck, selectedCards, positions, totalNeeded]
+    [phase, isComplete, shuffledDeck, selectedCards, pickedVisualIndices, positions, totalNeeded]
   );
+
+  const goToRevealed = useCallback(() => {
+    setPhase("revealed");
+  }, []);
 
   const saveReading = useCallback(
     (question?: string) => {
@@ -70,18 +80,21 @@ export function useTarotReading(spreadType: SpreadType) {
   const reset = useCallback(() => {
     setShuffledDeck([]);
     setSelectedCards([]);
+    setPickedVisualIndices([]);
     setPhase("idle");
   }, []);
 
   return {
     shuffledDeck,
     selectedCards,
+    pickedVisualIndices,
     phase,
     totalNeeded,
     pickedCount,
     isComplete,
     startReading,
     pickCard,
+    goToRevealed,
     saveReading,
     reset,
   };

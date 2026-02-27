@@ -17,6 +17,7 @@ export type SpreadType =
   | "daily"
   | "three-card"
   | "celtic-cross"
+  | "yes-no"
   | "question"
   | "lunar";
 

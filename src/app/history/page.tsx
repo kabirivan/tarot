@@ -7,6 +7,7 @@ const spreadLabels: Record<string, string> = {
   daily: "Carta del Día",
   "three-card": "3 Cartas",
   "celtic-cross": "Cruz Celta",
+  "yes-no": "Sí / No",
   question: "Pregunta",
   lunar: "Lunar",
 };

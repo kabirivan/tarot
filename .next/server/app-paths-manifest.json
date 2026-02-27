@@ -1,3 +1,7 @@
 {
+  "/history/page": "app/history/page.js",
+  "/page": "app/page.js",
+  "/reading/celtic-cross/page": "app/reading/celtic-cross/page.js",
+  "/reading/three-card/page": "app/reading/three-card/page.js",
   "/reading/daily/page": "app/reading/daily/page.js"
 }

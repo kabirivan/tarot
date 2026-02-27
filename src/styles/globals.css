@@ -12,6 +12,17 @@
   --success: #10B981;
   --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
   --gradient-dark: linear-gradient(180deg, #0F0A1F 0%, #1E1B4B 100%);
+  --picker-scale: 0.7;
+}
+
+@media (min-width: 640px) {
+  :root { --picker-scale: 0.82; }
+}
+@media (min-width: 1024px) {
+  :root { --picker-scale: 0.92; }
+}
+@media (min-width: 1280px) {
+  :root { --picker-scale: 1; }
 }
 
 @layer base {

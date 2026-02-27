@@ -1,46 +1,156 @@
-/* Efecto holográfico / rainbow shine en cartas */
-.holographic {
+/* ═══════════════════════════════════════════════
+   Holographic card effect — covers entire surface
+   ═══════════════════════════════════════════════ */
+
+.holo-card {
+  --mx: 0.5;
+  --my: 0.5;
+  --rx: 0deg;
+  --ry: 0deg;
+  --frame: 6px;
+
   position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(600px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    transform 0.18s ease-out,
+    box-shadow 0.25s ease-out;
+  will-change: transform;
+  border-radius: 0.75rem;
+  padding: var(--frame);
   overflow: hidden;
+
+  background:
+    linear-gradient(
+      calc(var(--mx) * 360deg),
+      rgba(139, 92, 246, 0.5) 0%,
+      rgba(236, 72, 153, 0.4) 25%,
+      rgba(245, 158, 11, 0.4) 50%,
+      rgba(16, 185, 129, 0.4) 75%,
+      rgba(139, 92, 246, 0.5) 100%
+    );
+  background-size: 200% 200%;
 }
 
-.holographic::before {
+.holo-card-lg {
+  --frame: 8px;
+}
+
+/* ── Rainbow shimmer — ON TOP of image with blend mode ── */
+.holo-card::before {
   content: '';
   position: absolute;
-  inset: -100%;
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    transparent 0deg,
-    rgba(139, 92, 246, 0.15) 60deg,
-    rgba(236, 72, 153, 0.2) 120deg,
-    rgba(245, 158, 11, 0.15) 180deg,
-    rgba(139, 92, 246, 0.15) 240deg,
-    transparent 300deg
-  );
-  animation: holographic-rotate 4s linear infinite;
+  inset: 0;
+  z-index: 20;
+  border-radius: inherit;
   pointer-events: none;
+  opacity: 0.15;
+  transition: opacity 0.35s ease;
+  mix-blend-mode: color-dodge;
+  filter: brightness(1.3) saturate(1.5);
+  background:
+    repeating-linear-gradient(
+      calc(var(--mx) * 360deg),
+      rgba(255, 119, 115, 0.6) 0%,
+      rgba(255, 237, 95, 0.5) 8%,
+      rgba(168, 255, 120, 0.5) 16%,
+      rgba(120, 255, 214, 0.5) 24%,
+      rgba(120, 198, 255, 0.6) 32%,
+      rgba(216, 120, 255, 0.6) 40%,
+      rgba(255, 119, 215, 0.5) 48%,
+      rgba(255, 119, 115, 0.6) 56%
+    );
 }
 
-.holographic-card-inner {
+.holo-card:hover::before {
+  opacity: 0.55;
+}
+
+/* ── Specular glare / light spot — ON TOP with soft-light ── */
+.holo-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 21;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  mix-blend-mode: soft-light;
+  background: radial-gradient(
+    circle at calc(var(--mx) * 100%) calc(var(--my) * 100%),
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.25) 20%,
+    transparent 55%
+  );
+}
+
+.holo-card:hover::after {
+  opacity: 1;
+}
+
+/* ── Glow shadow ── */
+.holo-card {
+  box-shadow:
+    0 0 12px rgba(139, 92, 246, 0.2),
+    0 0 24px rgba(236, 72, 153, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.holo-card:hover {
+  /* Mantén solo el giro holográfico, sin hacer zoom */
+  transform: perspective(600px) rotateX(var(--rx)) rotateY(var(--ry));
+  box-shadow:
+    0 0 24px rgba(139, 92, 246, 0.55),
+    0 0 48px rgba(236, 72, 153, 0.35),
+    0 0 72px rgba(245, 158, 11, 0.18),
+    0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Sparkle texture — ON TOP ── */
+.holo-card .holo-sparkle {
+  position: absolute;
+  inset: 0;
+  z-index: 22;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  mix-blend-mode: overlay;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.3) 0%, transparent 3%),
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,0.25) 0%, transparent 3%),
+    radial-gradient(circle at 50% 90%, rgba(255,255,255,0.2) 0%, transparent 3%),
+    radial-gradient(circle at 10% 80%, rgba(255,255,255,0.25) 0%, transparent 2.5%),
+    radial-gradient(circle at 90% 70%, rgba(255,255,255,0.2) 0%, transparent 2.5%),
+    radial-gradient(circle at 40% 10%, rgba(255,255,255,0.15) 0%, transparent 2%),
+    radial-gradient(circle at 70% 50%, rgba(255,255,255,0.15) 0%, transparent 2%);
+}
+
+.holo-card:hover .holo-sparkle {
+  opacity: 1;
+}
+
+/* ── Inner card content ── */
+.holo-card .holo-content {
   position: relative;
   z-index: 1;
-  border-radius: inherit;
+  border-radius: calc(0.75rem - var(--frame) + 2px);
   overflow: hidden;
+  height: 100%;
 }
 
-@keyframes holographic-rotate {
-  to {
-    transform: rotate(360deg);
-  }
+/* ── Outer border highlight ── */
+.holo-card .holo-border {
+  position: absolute;
+  inset: 0;
+  z-index: 23;
+  border-radius: inherit;
+  pointer-events: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  transition: border-color 0.3s ease;
 }
 
-/* Glow suave en hover */
-.holographic-glow {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3),
-              0 0 40px rgba(236, 72, 153, 0.2);
-}
-
-.holographic-glow:hover {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.5),
-              0 0 60px rgba(236, 72, 153, 0.3);
+.holo-card:hover .holo-border {
+  border-color: rgba(255, 255, 255, 0.4);
 }

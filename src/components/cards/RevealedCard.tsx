@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils/cn";
@@ -9,13 +10,15 @@ interface RevealedCardProps {
   reading: ReadingCard;
   index: number;
   positionLabel: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
+  hideMeaning?: boolean;
 }
 
 const sizeClasses = {
-  sm: "w-20 h-[140px] sm:w-24 sm:h-[168px]",
-  md: "w-28 h-[196px] sm:w-36 sm:h-[252px]",
-  lg: "w-36 h-[252px] sm:w-44 sm:h-[308px]",
+  sm: "w-24 h-[156px] sm:w-28 sm:h-[182px]",
+  md: "w-32 h-[220px] sm:w-40 sm:h-[275px]",
+  lg: "w-44 h-[302px] sm:w-52 sm:h-[357px]",
+  xl: "w-52 h-[357px] sm:w-60 sm:h-[413px]",
 };
 
 export function RevealedCard({
@@ -23,41 +26,75 @@ export function RevealedCard({
   index,
   positionLabel,
   size = "md",
+  hideMeaning = false,
 }: RevealedCardProps) {
   const { card } = reading;
   const displayName = card.nameEs ?? card.name;
   const meaning = card.reversedDrawn ? card.reversed : card.upright;
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) / rect.width;
+    const my = (e.clientY - rect.top) / rect.height;
+    const ry = (mx - 0.5) * 16;
+    const rx = (my - 0.5) * -16;
+
+    el.style.setProperty("--mx", mx.toFixed(3));
+    el.style.setProperty("--my", my.toFixed(3));
+    el.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+    el.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.setProperty("--mx", "0.5");
+    el.style.setProperty("--my", "0.5");
+    el.style.setProperty("--rx", "0deg");
+    el.style.setProperty("--ry", "0deg");
+  }, []);
 
   return (
     <motion.div
-      initial={{ opacity: 0, rotateY: -90, scale: 0.6 }}
+      initial={{ opacity: 0, rotateY: -20, scale: 0.93 }}
       animate={{ opacity: 1, rotateY: 0, scale: 1 }}
       transition={{
-        delay: index * 0.15,
-        duration: 0.6,
+        delay: index * 0.08,
+        duration: 0.35,
         type: "spring",
-        stiffness: 200,
-        damping: 20,
+        stiffness: 180,
+        damping: 24,
       }}
-      className="flex flex-col items-center gap-2"
+      className="flex flex-col items-center gap-1"
+      style={{ perspective: 600 }}
     >
       <motion.span
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -3 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.15 + 0.3 }}
-        className="text-xs font-semibold text-secondary"
+        transition={{ delay: index * 0.08 + 0.15 }}
+        className="text-[10px] sm:text-xs font-semibold text-secondary"
       >
         {positionLabel}
       </motion.span>
 
       <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         className={cn(
-          "relative rounded-xl overflow-hidden holographic holographic-glow",
+          "holo-card cursor-pointer",
+          (size === "lg" || size === "xl") && "holo-card-lg",
           sizeClasses[size]
         )}
       >
-        <div className="holographic-card-inner absolute inset-0 card-surface flex flex-col items-center justify-center p-2">
-          <div className="relative w-full h-full min-h-[80%] rounded-lg overflow-hidden bg-dark/50">
+        <div className="holo-sparkle" />
+        <div className="holo-border" />
+
+        <div className="holo-content bg-dark-surface flex flex-col items-center justify-center p-1.5">
+          <div className="relative w-full flex-1 min-h-0 rounded-lg overflow-hidden bg-dark/60">
             <Image
               src={card.image}
               alt={displayName}
@@ -75,30 +112,32 @@ export function RevealedCard({
                 if (parent) {
                   const fallback = document.createElement("div");
                   fallback.className =
-                    "absolute inset-0 flex items-center justify-center text-center text-xs font-medium text-primary px-1";
+                    "absolute inset-0 flex items-center justify-center text-center text-xs font-medium text-primary px-2";
                   fallback.textContent = displayName;
                   parent.appendChild(fallback);
                 }
               }}
             />
           </div>
-          <p className="text-[10px] sm:text-xs text-center text-white/90 mt-1 truncate w-full">
+          <p className="text-[9px] sm:text-[11px] text-center text-white/90 mt-1 truncate w-full font-medium">
             {displayName}
           </p>
           {card.reversedDrawn && (
-            <span className="text-[9px] text-accent">Invertida</span>
+            <span className="text-[8px] text-accent font-medium">Invertida</span>
           )}
         </div>
       </div>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: index * 0.15 + 0.5 }}
-        className="text-xs text-white/70 text-center max-w-[180px] line-clamp-3"
-      >
-        {meaning}
-      </motion.p>
+      {!hideMeaning && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: index * 0.08 + 0.25 }}
+          className="text-[10px] sm:text-xs text-white/60 text-center max-w-[180px] line-clamp-2 leading-snug"
+        >
+          {meaning}
+        </motion.p>
+      )}
     </motion.div>
   );
 }
