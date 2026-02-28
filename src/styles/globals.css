@@ -12,14 +12,18 @@
   --success: #10B981;
   --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
   --gradient-dark: linear-gradient(180deg, #0F0A1F 0%, #1E1B4B 100%);
-  --picker-scale: 0.7;
+  /* Escala base más pequeña para que el círculo de cartas quepa mejor en móviles */
+  --picker-scale: 0.52;
 }
 
+@media (min-width: 480px) {
+  :root { --picker-scale: 0.6; }
+}
 @media (min-width: 640px) {
-  :root { --picker-scale: 0.82; }
+  :root { --picker-scale: 0.78; }
 }
 @media (min-width: 1024px) {
-  :root { --picker-scale: 0.92; }
+  :root { --picker-scale: 0.9; }
 }
 @media (min-width: 1280px) {
   :root { --picker-scale: 1; }
