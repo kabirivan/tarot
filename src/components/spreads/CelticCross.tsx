@@ -174,12 +174,9 @@ export function CelticCrossSpread() {
                 </div>
               </div>
 
-              <div className="flex-1 min-h-0 flex items-center justify-center w-full">
-                <div className="relative" style={{ width: 800, height: 640 }}>
-                  <div
-                    className="absolute inset-0 origin-center"
-                    style={{ transform: "scale(var(--picker-scale, 0.78))" }}
-                  >
+              <div className="flex-1 min-h-0 flex flex-col items-center w-full overflow-hidden">
+                <div className="relative w-full flex-1 min-h-[380px] sm:flex-none sm:w-[800px] sm:h-[640px] sm:min-h-0">
+                  <div className="absolute inset-0 picker-scale-md">
                     <CardPicker
                       pickedIndices={pickedVisualIndices}
                       onPick={pickCard}

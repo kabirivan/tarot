@@ -49,6 +49,15 @@
   .card-surface {
     @apply bg-dark-surface/80 backdrop-blur-sm border border-white/10 rounded-2xl;
   }
+  /* Solo escalar el círculo de cartas en desktop; en móvil el grid usa todo el espacio sin escala */
+  .picker-scale-md {
+    transform-origin: center center;
+  }
+  @media (min-width: 768px) {
+    .picker-scale-md {
+      transform: scale(var(--picker-scale));
+    }
+  }
 }
 
 @import './holographic.css';
