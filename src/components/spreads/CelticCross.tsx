@@ -268,7 +268,7 @@ export function CelticCrossSpread() {
             </motion.h2>
 
             <div
-              className="relative z-10 grid grid-cols-5 gap-1.5 sm:gap-2 w-full px-2 sm:px-4 max-w-[100vw]"
+              className="relative z-10 grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2 w-full px-2 sm:px-4 max-w-[100vw]"
               style={{ perspective: 1200 }}
             >
               {selectedCards.slice(0, totalNeeded).map((rc, i) => {
@@ -289,7 +289,7 @@ export function CelticCrossSpread() {
                     }}
                   >
                     <div
-                      className="holo-card w-full aspect-[2/3] max-w-[15.3vw] sm:max-w-[17vw] min-w-0"
+                      className="holo-card w-full aspect-[2/3] max-w-[42vw] sm:max-w-[17vw] min-w-0"
                       style={{ ["--frame" as string]: "6px" }}
                     >
                       <div className="holo-sparkle" />
@@ -359,7 +359,7 @@ export function CelticCrossSpread() {
               transition={{ delay: 0.15, duration: 0.4 }}
               className="flex-shrink-0 flex flex-col items-center justify-center p-3 sm:p-4 lg:p-8 lg:w-[58%] min-h-0 overflow-y-auto"
             >
-              <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 sm:gap-5 justify-items-center w-full max-w-[580px] mx-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5 justify-items-center w-full max-w-[580px] mx-auto">
                 {selectedCards.map((rc, i) => (
                   <button
                     key={rc.card.id}

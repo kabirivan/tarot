@@ -223,7 +223,7 @@ export function ThreeCardSpread() {
               transition={{ duration: 1.2, ease: "easeOut" }}
             />
 
-            <div className="relative z-10 flex flex-row gap-3 sm:gap-5 items-end justify-center flex-wrap px-4" style={{ perspective: 1200 }}>
+            <div className="relative z-10 flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center flex-wrap px-4" style={{ perspective: 1200 }}>
               {selectedCards.map((rc, i) => {
                 const name = rc.card.nameEs ?? rc.card.name;
                 const pos = positions[i];
@@ -242,12 +242,8 @@ export function ThreeCardSpread() {
                     }}
                   >
                     <div
-                      className="holo-card holo-card-lg"
-                      style={{
-                        width: "min(42vw, 280px)",
-                        height: "min(71vw, 476px)",
-                        ["--frame" as string]: "12px",
-                      }}
+                      className="holo-card holo-card-lg w-[min(78vw,280px)] aspect-[10/17] sm:w-[min(42vw,280px)]"
+                      style={{ ["--frame" as string]: "12px" }}
                     >
                       <div className="holo-sparkle" />
                       <div className="holo-border" />
@@ -321,12 +317,12 @@ export function ThreeCardSpread() {
               transition={{ delay: 0.15, duration: 0.4 }}
               className="flex-shrink-0 flex flex-col items-center justify-center gap-2 p-3 sm:p-4 lg:p-8 lg:w-[55%]"
             >
-              <div className="flex flex-row gap-4 sm:gap-6 justify-center items-stretch flex-wrap">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center sm:items-stretch flex-wrap w-full">
                 {selectedCards.map((rc, i) => (
                   <button
                     key={rc.card.id}
                     type="button"
-                    className="flex flex-col items-center cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
+                    className="flex flex-col items-center cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg w-full max-w-[280px] sm:max-w-none"
                     onClick={() => setLightboxCardIndex(i)}
                   >
                     <RevealedCard

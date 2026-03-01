@@ -16,9 +16,11 @@ interface RevealedCardProps {
 
 const sizeClasses = {
   sm: "w-24 h-[156px] sm:w-28 sm:h-[182px]",
-  md: "w-32 h-[220px] sm:w-40 sm:h-[275px]",
+  /* En mobile (grid 2 cols): ocupa la celda con buena proporción; en sm+ tamaño fijo */
+  md: "w-full max-w-[160px] aspect-[2/3] h-auto mx-auto sm:max-w-none sm:mx-0 sm:w-40 sm:h-[275px] sm:aspect-auto",
   lg: "w-44 h-[302px] sm:w-52 sm:h-[357px]",
-  xl: "w-52 h-[357px] sm:w-60 sm:h-[413px]",
+  /* En mobile: ocupa el ancho del contenedor (ej. max-w-[280px]) con proporción 2:3; en sm+ tamaños fijos */
+  xl: "w-full max-w-[280px] min-w-[200px] aspect-[2/3] h-auto sm:max-w-none sm:min-w-0 sm:w-52 sm:h-[357px] sm:aspect-auto lg:w-60 lg:h-[413px]",
 };
 
 export function RevealedCard({
@@ -103,7 +105,7 @@ export function RevealedCard({
                 "object-contain",
                 card.reversedDrawn && "rotate-180"
               )}
-              sizes="(max-width: 640px) 144px, 176px"
+              sizes="(max-width: 640px) 280px, (max-width: 1024px) 176px, 240px"
               unoptimized
               onError={(e) => {
                 const target = e.target as HTMLImageElement;

@@ -228,12 +228,8 @@ export function QuestionSpread() {
               }}
             >
               <div
-                className="holo-card holo-card-lg"
-                style={{
-                  width: "min(55vw, 280px)",
-                  height: "min(93.5vw, 476px)",
-                  ["--frame" as string]: "10px",
-                }}
+                className="holo-card holo-card-lg w-[min(82vw,320px)] aspect-[10/17] sm:w-[min(55vw,280px)]"
+                style={{ ["--frame" as string]: "10px" }}
               >
                 <div className="holo-sparkle" />
                 <div className="holo-border" />
@@ -321,11 +317,8 @@ export function QuestionSpread() {
                   onClick={() => setLightboxOpen(true)}
                 >
                   <div
-                    className="holo-card holo-card-lg h-full max-h-[75vh] lg:max-h-[92%]"
-                    style={{
-                      aspectRatio: "10 / 17",
-                      ["--frame" as string]: "10px",
-                    }}
+                    className="holo-card holo-card-lg w-[min(88vw,320px)] min-h-[50vh] max-h-[72vh] aspect-[10/17] sm:w-full sm:min-h-0 sm:max-h-[75vh] lg:max-h-[92%]"
+                    style={{ ["--frame" as string]: "10px" }}
                   >
                     <div className="holo-sparkle" />
                     <div className="holo-border" />
