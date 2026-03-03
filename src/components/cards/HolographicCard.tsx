@@ -97,12 +97,6 @@ export function HolographicCard({
                 }}
               />
             </div>
-            <p className="text-[10px] sm:text-xs text-center text-white/90 mt-1.5 truncate w-full font-medium">
-              {displayName}
-            </p>
-            {card.reversedDrawn && (
-              <span className="text-[9px] text-accent font-medium">Invertida</span>
-            )}
           </>
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/30 to-accent/30 rounded-lg">

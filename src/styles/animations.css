@@ -128,3 +128,17 @@
 .animate-hero-glow {
   animation: hero-glow 18s ease-in-out infinite;
 }
+
+/* Respetar preferencia de movimiento reducido (Tailwind skill) */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-gentle,
+  .animate-hero-glow,
+  .animate-orb-pulse,
+  .animate-pulse-glow,
+  .animate-star-twinkle,
+  .animate-shimmer {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

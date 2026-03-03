@@ -259,12 +259,6 @@ export function ThreeCardSpread() {
                             priority
                           />
                         </div>
-                        <p className="text-[10px] text-center text-white/90 mt-1 font-medium truncate w-full">
-                          {name}
-                        </p>
-                        {rc.card.reversedDrawn && (
-                          <span className="text-[9px] text-accent font-medium">Invertida</span>
-                        )}
                       </div>
                     </div>
                     <motion.span

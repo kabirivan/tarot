@@ -69,12 +69,6 @@ export function CardLightbox({ reading, positionLabel, onClose }: CardLightboxPr
                   unoptimized
                 />
               </div>
-              <p className="text-sm text-center text-white/95 mt-1.5 font-medium">
-                {displayName}
-              </p>
-              {card.reversedDrawn && (
-                <span className="text-xs text-accent font-medium">Invertida</span>
-              )}
             </div>
           </div>
 

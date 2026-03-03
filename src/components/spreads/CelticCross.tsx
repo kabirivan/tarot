@@ -306,15 +306,9 @@ export function CelticCrossSpread() {
                             priority
                           />
                         </div>
-                        <p className="text-[9px] sm:text-[10px] text-center text-white/90 mt-0.5 font-medium truncate w-full">
-                          {name}
-                        </p>
-                        {rc.card.reversedDrawn && (
-                          <span className="text-[8px] text-accent font-medium">Inv.</span>
-                        )}
                       </div>
                     </div>
-                    <span className="text-[9px] sm:text-[10px] font-medium text-secondary mt-1 text-center truncate w-full">
+                    <span className="text-[9px] sm:text-[10px] font-medium text-secondary mt-1 text-center w-full line-clamp-1 break-words">
                       {pos?.nameEs ?? ""}
                     </span>
                   </motion.div>

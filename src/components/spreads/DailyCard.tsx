@@ -261,24 +261,6 @@ export function DailyCardSpread() {
                       priority
                     />
                   </div>
-                  <motion.p
-                    className="text-xs sm:text-sm text-center text-white/90 mt-1.5 font-semibold truncate w-full"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.4 }}
-                  >
-                    {revealDisplayName}
-                  </motion.p>
-                  {revealCard.card.reversedDrawn && (
-                    <motion.span
-                      className="text-[10px] text-accent font-medium"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 1.6 }}
-                    >
-                      Invertida
-                    </motion.span>
-                  )}
                 </div>
               </div>
             </motion.div>
@@ -363,7 +345,7 @@ export function DailyCardSpread() {
                       aria-hidden="true"
                       onMouseMove={handleMouseMove}
                       onMouseLeave={handleMouseLeave}
-                      className="holo-card holo-card-lg w-[min(88vw,320px)] min-h-[50vh] max-h-[72vh] aspect-[10/17] sm:w-full sm:min-h-0 sm:max-h-[75vh] lg:max-h-[92%]"
+                      className="holo-card holo-card-lg w-[min(88vw,280px)] max-w-[280px] aspect-[10/17] shrink-0"
                       style={{ ["--frame" as string]: "10px" }}
                     >
                       <div className="holo-sparkle" />
@@ -395,14 +377,6 @@ export function DailyCardSpread() {
                             }}
                           />
                         </div>
-                        <p className="text-[10px] sm:text-xs text-center text-white/90 mt-1 font-medium truncate w-full">
-                          {displayName}
-                        </p>
-                        {card.reversedDrawn && (
-                          <span className="text-[9px] sm:text-[10px] text-accent font-medium">
-                            Invertida
-                          </span>
-                        )}
                       </div>
                     </div>
                   </motion.button>

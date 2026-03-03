@@ -121,12 +121,6 @@ export function RevealedCard({
               }}
             />
           </div>
-          <p className="text-[9px] sm:text-[11px] text-center text-white/90 mt-1 truncate w-full font-medium">
-            {displayName}
-          </p>
-          {card.reversedDrawn && (
-            <span className="text-[8px] text-accent font-medium">Invertida</span>
-          )}
         </div>
       </div>
 

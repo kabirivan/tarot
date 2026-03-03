@@ -1,4 +1,24 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const container = {
+  hidden: { opacity: 0 },
+  visible: (i = 1) => ({
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.06 * i },
+  }),
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: [0.19, 1, 0.22, 1] },
+  },
+};
 
 const spreads = [
   {
@@ -102,66 +122,92 @@ export default function HomePage() {
       <div className="max-w-6xl mx-auto w-full flex flex-col gap-16 sm:gap-20 py-10 sm:py-14">
 
         {/* ═══ HERO ═══ */}
-        <section className="relative text-center flex flex-col items-center">
+        <motion.section
+          className="relative text-center flex flex-col items-center"
+          initial="hidden"
+          animate="visible"
+          variants={container}
+        >
           <div className="pointer-events-none absolute -inset-20 -z-10">
-            <div className="animate-hero-glow absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_30%_20%,_rgba(139,92,246,0.4),transparent_50%),radial-gradient(circle_at_70%_80%,_rgba(236,72,153,0.35),transparent_50%),radial-gradient(circle_at_50%_50%,_rgba(245,158,11,0.15),transparent_60%)] blur-3xl" />
+            <div className="animate-hero-glow absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_30%_20%,_rgba(139,92,246,0.4),transparent_50%),radial-gradient(circle_at_70%_80%,_rgba(236,72,153,0.35),transparent_50%),radial-gradient(circle_at_50%_50%,_rgba(245,158,11,0.15),transparent_60%)] blur-3xl motion-reduce:animate-none" />
           </div>
 
-          <span className="inline-block mb-4 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-widest bg-primary/15 text-primary/90 border border-primary/25">
+          <motion.span
+            variants={item}
+            className="inline-block mb-4 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-widest bg-primary/15 text-primary/90 border border-primary/25"
+          >
             Lecturas de tarot gratuitas
-          </span>
+          </motion.span>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-5 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent leading-tight max-w-4xl">
+          <motion.h1
+            variants={item}
+            className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold mb-5 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent leading-tight max-w-4xl"
+          >
             Tarot bonito, místico y sin drama técnico
-          </h1>
+          </motion.h1>
 
-          <p className="text-base sm:text-lg lg:text-xl text-white/65 mb-6 max-w-2xl leading-relaxed">
+          <motion.p
+            variants={item}
+            className="text-base sm:text-lg lg:text-xl text-white/65 mb-6 max-w-2xl leading-relaxed"
+          >
             Elige tus cartas, deja que el Mago Xavi se ponga coqueto con la interpretación
             y guarda tu lectura en un PDF precioso. Todo en español, directo en tu navegador.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
+          <motion.div
+            variants={item}
+            className="flex flex-col sm:flex-row items-center gap-3 mb-4"
+          >
             <Link
               href="/dashboard"
-              className="btn-primary text-white text-base sm:text-lg px-10 py-3.5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-shadow"
+              className="btn-primary text-white text-base sm:text-lg px-10 py-3.5 shadow-lg shadow-primary/30"
             >
               Empezar una lectura
             </Link>
             <a
               href="#como-funciona"
-              className="text-sm text-white/50 hover:text-white/80 transition-colors"
+              className="text-sm text-white/50 hover:text-white/80 transition-colors duration-200 min-h-[44px] min-w-[44px] inline-flex items-center justify-center"
             >
               Ver cómo funciona
             </a>
-          </div>
+          </motion.div>
 
-          <p className="text-[11px] text-white/35">
+          <motion.p
+            variants={item}
+            className="text-[11px] text-white/35"
+          >
             Sin registro · Gratis · En español · 78 cartas
-          </p>
-        </section>
+          </motion.p>
+        </motion.section>
 
         {/* ═══ SPREADS / GAME OPTIONS ═══ */}
-        <section>
-          <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white/95 mb-2">
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={container}
+          className="scroll-mt-20"
+        >
+          <motion.div variants={item} className="text-center mb-8">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-white/95 mb-2">
               ¿Qué quieres jugar hoy?
             </h2>
             <p className="text-sm sm:text-base text-white/50 max-w-lg mx-auto">
               Elige un tipo de lectura y deja que las cartas hagan su magia.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {spreads.map(({ href, icon, title, subtitle, description, color, soon }) => {
+            {spreads.map(({ href, icon, title, subtitle, description, color, soon }, i) => {
               const CardContent = (
                 <>
-                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color} opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out`} />
                   <div className="relative z-10 flex flex-col gap-2">
-                    <span className="text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-3xl sm:text-4xl transition-transform duration-200 ease-out-expo group-hover:scale-110 motion-reduce:group-hover:scale-100">
                       {icon}
                     </span>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-base sm:text-lg text-white/95">{title}</h3>
+                      <h3 className="font-display font-bold text-base sm:text-lg text-white/95">{title}</h3>
                       {soon && (
                         <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide bg-accent/20 text-accent/95">
                           Muy pronto
@@ -178,39 +224,47 @@ export default function HomePage() {
 
               if (soon) {
                 return (
-                  <div
+                  <motion.div
                     key={href}
+                    variants={item}
                     className="relative card-surface p-5 sm:p-6 rounded-2xl opacity-55 cursor-not-allowed flex flex-col gap-2 group overflow-hidden"
                     aria-disabled="true"
                   >
                     {CardContent}
-                  </div>
+                  </motion.div>
                 );
               }
 
               return (
-                <Link
-                  key={href}
-                  href={href}
-                  className="relative card-surface p-5 sm:p-6 rounded-2xl hover:border-primary/50 hover:shadow-lg hover:shadow-primary/15 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-2 group overflow-hidden"
-                >
-                  {CardContent}
-                </Link>
+                <motion.div key={href} variants={item}>
+                  <Link
+                    href={href}
+                    className="relative card-surface p-5 sm:p-6 rounded-2xl flex flex-col gap-2 group overflow-hidden block transition-[border-color,box-shadow,transform] duration-200 ease-out-expo hover:border-primary/50 hover:shadow-lg hover:shadow-primary/15 hover:-translate-y-1 active:scale-[0.99] motion-reduce:hover:translate-y-0"
+                  >
+                    {CardContent}
+                  </Link>
+                </motion.div>
               );
             })}
           </div>
-        </section>
+        </motion.section>
 
         {/* ═══ ABOUT ═══ */}
-        <section className="relative">
+        <motion.section
+          className="relative"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={container}
+        >
           <div className="pointer-events-none absolute -inset-10 -z-10">
             <div className="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.25),transparent_70%)] blur-2xl" />
           </div>
 
-          <div className="card-surface rounded-2xl p-6 sm:p-8 lg:p-10 border-primary/20">
+          <motion.div variants={item} className="card-surface rounded-2xl p-6 sm:p-8 lg:p-10 border-primary/20">
             <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-10 items-center">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-white/95 mb-4">
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-white/95 mb-4">
                   Sobre Mystic Tarot
                 </h2>
                 <div className="space-y-3 text-sm sm:text-base text-white/60 leading-relaxed">
@@ -240,9 +294,9 @@ export default function HomePage() {
                 ].map(({ num, label, color }) => (
                   <div
                     key={label}
-                    className="card-surface p-4 rounded-xl text-center group hover:border-primary/30 transition-all duration-300"
+                    className="card-surface p-4 rounded-xl text-center group transition-[border-color,transform] duration-200 ease-out-expo hover:border-primary/30 hover:scale-[1.02] motion-reduce:hover:scale-100"
                   >
-                    <p className={`text-2xl sm:text-3xl font-bold ${color} mb-1 group-hover:scale-110 transition-transform duration-300`}>
+                    <p className={`font-display text-2xl sm:text-3xl font-bold ${color} mb-1 transition-transform duration-200 group-hover:scale-110 motion-reduce:group-hover:scale-100`}>
                       {num}
                     </p>
                     <p className="text-[10px] sm:text-xs text-white/50">{label}</p>
@@ -250,55 +304,69 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
         {/* ═══ HOW IT WORKS ═══ */}
-        <section id="como-funciona">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white/95 mb-2">
+        <motion.section
+          id="como-funciona"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={container}
+          className="scroll-mt-20"
+        >
+          <motion.div variants={item} className="text-center mb-8">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-white/95 mb-2">
               ¿Cómo funciona?
             </h2>
             <p className="text-sm sm:text-base text-white/50 max-w-lg mx-auto">
               No hay ciencia oculta (bueno, un poquito). Tres pasos y listo.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-            {steps.map(({ num, icon, title, description }) => (
-              <div
+            {steps.map(({ num, icon, title, description }, i) => (
+              <motion.div
                 key={num}
-                className="relative card-surface p-5 sm:p-6 rounded-2xl flex flex-col gap-3 group hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                variants={item}
+                className="relative card-surface p-5 sm:p-6 rounded-2xl flex flex-col gap-3 group overflow-hidden transition-[border-color,transform] duration-200 ease-out-expo hover:border-primary/40 hover:-translate-y-1 motion-reduce:hover:translate-y-0"
               >
-                <span className="absolute top-3 right-3 text-4xl sm:text-5xl font-black text-white/[0.04] select-none">
+                <span className="absolute top-3 right-3 text-4xl sm:text-5xl font-black text-white/[0.04] select-none font-display">
                   {num}
                 </span>
-                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">
+                <span className="text-3xl transition-transform duration-200 ease-out-expo group-hover:scale-110 motion-reduce:group-hover:scale-100">
                   {icon}
                 </span>
-                <h3 className="font-bold text-base sm:text-lg text-white/90">{title}</h3>
+                <h3 className="font-display font-bold text-base sm:text-lg text-white/90">{title}</h3>
                 <p className="text-xs sm:text-sm text-white/55 leading-relaxed">
                   {description}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* ═══ PREPARATION TIPS ═══ */}
-        <section className="relative">
+        <motion.section
+          className="relative"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={container}
+        >
           <div className="pointer-events-none absolute -inset-10 -z-10">
             <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_right,_rgba(236,72,153,0.2),transparent_60%)] blur-2xl" />
           </div>
 
-          <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white/95 mb-2">
+          <motion.div variants={item} className="text-center mb-8">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-white/95 mb-2">
               Prepárate para tu lectura
             </h2>
             <p className="text-sm sm:text-base text-white/50 max-w-lg mx-auto">
               Un par de cositas que hacen la diferencia entre una lectura &quot;meh&quot; y una que te deje pensando.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
             {[
@@ -318,65 +386,80 @@ export default function HomePage() {
                 description: "El tarot no adivina el futuro, pero sí te ayuda a ver patrones, opciones y caminos que quizás no estabas mirando.",
               },
             ].map(({ icon, title, description }) => (
-              <div
+              <motion.div
                 key={title}
-                className="card-surface p-5 sm:p-6 rounded-2xl flex flex-col gap-3 group hover:border-accent/30 hover:-translate-y-1 transition-all duration-300"
+                variants={item}
+                className="card-surface p-5 sm:p-6 rounded-2xl flex flex-col gap-3 group transition-[border-color,transform] duration-200 ease-out-expo hover:border-accent/30 hover:-translate-y-1 motion-reduce:hover:translate-y-0"
               >
-                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">
+                <span className="text-3xl transition-transform duration-200 ease-out-expo group-hover:scale-110 motion-reduce:group-hover:scale-100">
                   {icon}
                 </span>
-                <h3 className="font-bold text-base sm:text-lg text-white/90">{title}</h3>
+                <h3 className="font-display font-bold text-base sm:text-lg text-white/90">{title}</h3>
                 <p className="text-xs sm:text-sm text-white/55 leading-relaxed">{description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* ═══ FAQ ═══ */}
-        <section>
-          <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white/95 mb-2">
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={container}
+        >
+          <motion.div variants={item} className="text-center mb-8">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-white/95 mb-2">
               Preguntas frecuentes
             </h2>
             <p className="text-sm sm:text-base text-white/50 max-w-lg mx-auto">
               Todo lo que necesitas saber antes de sacar tu primera carta.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
             {faqs.map(({ q, a }) => (
-              <div
+              <motion.div
                 key={q}
-                className="card-surface p-4 sm:p-5 rounded-2xl group hover:border-primary/30 transition-all duration-300"
+                variants={item}
+                className="card-surface p-4 sm:p-5 rounded-2xl group transition-[border-color,color] duration-200 hover:border-primary/30"
               >
-                <p className="font-semibold text-sm sm:text-base text-white/85 mb-2 group-hover:text-primary/90 transition-colors duration-300">
+                <p className="font-semibold text-sm sm:text-base text-white/85 mb-2 transition-colors duration-200 group-hover:text-primary/90">
                   {q}
                 </p>
                 <p className="text-xs sm:text-sm text-white/55 leading-relaxed">{a}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* ═══ FINAL CTA ═══ */}
-        <section className="relative text-center pb-8">
+        <motion.section
+          className="relative text-center pb-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={container}
+        >
           <div className="pointer-events-none absolute -inset-10 -z-10">
-            <div className="animate-hero-glow absolute inset-0 opacity-50 bg-[radial-gradient(circle_at_center,_rgba(139,92,246,0.3),transparent_55%)] blur-3xl" />
+            <div className="animate-hero-glow absolute inset-0 opacity-50 bg-[radial-gradient(circle_at_center,_rgba(139,92,246,0.3),transparent_55%)] blur-3xl motion-reduce:animate-none" />
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white/95 mb-3">
+          <motion.h2 variants={item} className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white/95 mb-3">
             ¿Lista/o para descubrir qué dicen las cartas?
-          </h2>
-          <p className="text-sm sm:text-base text-white/50 mb-6 max-w-md mx-auto">
+          </motion.h2>
+          <motion.p variants={item} className="text-sm sm:text-base text-white/50 mb-6 max-w-md mx-auto">
             Sin drama, sin registro, sin costo. Solo tú, las cartas y el Mago Xavi.
-          </p>
-          <Link
-            href="/dashboard"
-            className="inline-block btn-primary text-white text-base sm:text-lg px-10 py-3.5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-shadow"
-          >
-            Empezar ahora
-          </Link>
-        </section>
+          </motion.p>
+          <motion.div variants={item}>
+            <Link
+              href="/dashboard"
+              className="inline-block btn-primary text-white text-base sm:text-lg px-10 py-3.5 shadow-lg shadow-primary/30"
+            >
+              Empezar ahora
+            </Link>
+          </motion.div>
+        </motion.section>
       </div>
     </div>
   );

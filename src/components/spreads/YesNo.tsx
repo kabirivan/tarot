@@ -245,12 +245,6 @@ export function YesNoSpread() {
                       priority
                     />
                   </div>
-                  <p className="text-sm text-center text-white/90 mt-1 font-medium truncate w-full">
-                    {revealDisplayName}
-                  </p>
-                  {revealCard.card.reversedDrawn && (
-                    <span className="text-xs text-accent font-medium">Invertida</span>
-                  )}
                 </div>
               </div>
             </motion.div>
@@ -314,7 +308,7 @@ export function YesNoSpread() {
                   onClick={() => setLightboxOpen(true)}
                 >
                   <div
-                    className="holo-card holo-card-lg w-[min(88vw,320px)] min-h-[50vh] max-h-[72vh] aspect-[10/17] sm:w-full sm:min-h-0 sm:max-h-[75vh] lg:max-h-[92%]"
+                    className="holo-card holo-card-lg w-[min(88vw,280px)] max-w-[280px] aspect-[10/17] shrink-0"
                     style={{ ["--frame" as string]: "10px" }}
                   >
                     <div className="holo-sparkle" />
@@ -334,14 +328,6 @@ export function YesNoSpread() {
                           priority
                         />
                       </div>
-                      <p className="text-[10px] sm:text-xs text-center text-white/90 mt-1 font-medium truncate w-full">
-                        {displayName}
-                      </p>
-                      {card.reversedDrawn && (
-                        <span className="text-[9px] sm:text-[10px] text-accent font-medium">
-                          Invertida
-                        </span>
-                      )}
                     </div>
                   </div>
                 </motion.button>

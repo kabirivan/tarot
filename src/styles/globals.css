@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,6 +14,10 @@
   --success: #10B981;
   --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
   --gradient-dark: linear-gradient(180deg, #0F0A1F 0%, #1E1B4B 100%);
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Outfit", system-ui, sans-serif;
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   /* Escala base más pequeña para que el círculo de cartas quepa mejor en móviles */
   --picker-scale: 0.52;
 }
@@ -35,16 +41,41 @@
   }
   body {
     @apply bg-dark text-light min-h-screen;
+    font-family: var(--font-body);
     background-image: var(--gradient-dark);
     background-attachment: fixed;
+  }
+  /* Grano sutil para atmósfera (frontend-design: texture) */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+  /* Respetar preferencia de movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
 @layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
   .btn-primary {
-    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300;
+    @apply px-6 py-3 rounded-xl font-medium min-h-[44px] min-w-[44px] inline-flex items-center justify-center;
     background: var(--gradient-primary);
-    @apply hover:opacity-90 hover:scale-[1.02] active:scale-[0.98];
+    transition: transform 0.2s var(--ease-out-expo), box-shadow 0.25s ease, opacity 0.2s ease;
+    @apply hover:opacity-95 hover:shadow-xl hover:shadow-primary/40 active:scale-[0.98] motion-reduce:transition-none;
   }
   .card-surface {
     @apply bg-dark-surface/80 backdrop-blur-sm border border-white/10 rounded-2xl;
