@@ -143,7 +143,7 @@ export default function HomePage() {
             variants={item}
             className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold mb-5 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent leading-tight max-w-4xl"
           >
-            Tarot bonito, místico y sin drama técnico
+            Tarot bonito, místico y sin drama
           </motion.h1>
 
           <motion.p
