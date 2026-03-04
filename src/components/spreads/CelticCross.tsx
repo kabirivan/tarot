@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -32,6 +32,12 @@ export function CelticCrossSpread() {
   const [aiText, setAiText] = useState<string | null>(null);
   const [generatingPdf, setGeneratingPdf] = useState(false);
   const [lightboxCardIndex, setLightboxCardIndex] = useState<number | null>(null);
+  const pickingScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (phase !== "picking") return;
+    pickingScrollRef.current?.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== "revealing" || selectedCards.length < totalNeeded) return;
@@ -126,13 +132,54 @@ export function CelticCrossSpread() {
         {/* ───────── PICKING ───────── */}
         {phase === "picking" && (
           <motion.div
+            ref={pickingScrollRef}
             key="picking"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
-            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-visible pt-6 sm:pt-8 lg:pt-12"
+            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-visible pt-6 sm:pt-8 lg:pt-12"
           >
-            <div className="lg:w-[70%] flex-shrink-0 flex flex-col items-center justify-start min-h-0 p-4">
+            {/* En móvil primero la selección (order-1) para ver las cartas elegidas; en lg a la derecha (order-2) */}
+            <div className="lg:w-[30%] flex-shrink-0 flex flex-col items-center justify-center min-h-0 p-4 lg:border-l lg:border-white/5 order-1 lg:order-2">
+              <p className="text-[10px] sm:text-xs font-semibold text-white/50 uppercase tracking-wider mb-2 lg:mb-3">
+                Tu selección
+              </p>
+              {selectedCards.length > 0 ? (
+                <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3 justify-items-center max-w-[420px]">
+                  {selectedCards.map((rc, i) => (
+                    <motion.div
+                      key={rc.card.id}
+                      initial={{ opacity: 0, scale: 0.5, y: -10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      transition={{ type: "spring", stiffness: 250, damping: 22 }}
+                    >
+                      <RevealedCard
+                        reading={rc}
+                        index={i}
+                        positionLabel={positions[i].nameEs}
+                        size="md"
+                        hideMeaning
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-5 gap-2 sm:gap-3 opacity-15 max-w-[420px]">
+                  {positions.slice(0, 5).map((pos) => (
+                    <div key={pos.nameEs} className="flex flex-col items-center gap-1">
+                      <div className="w-24 h-[164px] sm:w-28 sm:h-[191px] rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center">
+                        <span className="text-lg text-white/30">✦</span>
+                      </div>
+                      <span className="text-[10px] text-white/20 text-center truncate w-full">
+                        {pos.nameEs}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="lg:w-[70%] flex-shrink-0 flex flex-col items-center justify-start min-h-0 p-4 order-2 lg:order-1">
               <motion.h2
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -192,42 +239,6 @@ export function CelticCrossSpread() {
               >
                 Elige la carta para: {positions[pickedCount]?.nameEs ?? "..."}
               </motion.p>
-            </div>
-
-            <div className="lg:w-[30%] flex-shrink-0 flex flex-col items-center justify-center min-h-0 p-4 lg:border-l lg:border-white/5">
-              {selectedCards.length > 0 ? (
-                <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3 justify-items-center max-w-[420px]">
-                  {selectedCards.map((rc, i) => (
-                    <motion.div
-                      key={rc.card.id}
-                      initial={{ opacity: 0, scale: 0.5, y: -10 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      transition={{ type: "spring", stiffness: 250, damping: 22 }}
-                    >
-                      <RevealedCard
-                        reading={rc}
-                        index={i}
-                        positionLabel={positions[i].nameEs}
-                        size="md"
-                        hideMeaning
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              ) : (
-                <div className="grid grid-cols-5 gap-2 sm:gap-3 opacity-15 max-w-[420px]">
-                  {positions.slice(0, 5).map((pos) => (
-                    <div key={pos.nameEs} className="flex flex-col items-center gap-1">
-                      <div className="w-24 h-[164px] sm:w-28 sm:h-[191px] rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center">
-                        <span className="text-lg text-white/30">✦</span>
-                      </div>
-                      <span className="text-[10px] text-white/20 text-center truncate w-full">
-                        {pos.nameEs}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           </motion.div>
         )}
@@ -342,13 +353,14 @@ export function CelticCrossSpread() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden"
+            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-hidden"
           >
+            {/* Cartas: en móvil arriba (order-1); en lg a la izquierda (order-1) */}
             <motion.div
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.15, duration: 0.4 }}
-              className="flex-shrink-0 flex flex-col items-center justify-center p-3 sm:p-4 lg:p-8 lg:w-[58%] min-h-0 overflow-y-auto"
+              className="flex-shrink-0 flex flex-col items-center justify-center p-3 sm:p-4 lg:p-8 lg:w-[58%] min-h-0 overflow-y-auto order-1 lg:order-1"
             >
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5 justify-items-center w-full max-w-[580px] mx-auto">
                 {selectedCards.map((rc, i) => (
@@ -370,21 +382,12 @@ export function CelticCrossSpread() {
               </div>
             </motion.div>
 
-            <AnimatePresence>
-              {lightboxCardIndex !== null && selectedCards[lightboxCardIndex] && (
-                <CardLightbox
-                  reading={selectedCards[lightboxCardIndex]}
-                  positionLabel={positions[lightboxCardIndex]?.nameEs ?? ""}
-                  onClose={() => setLightboxCardIndex(null)}
-                />
-              )}
-            </AnimatePresence>
-
+            {/* Interpretación: en móvil debajo de las cartas (order-2), no se comprime; en lg a la derecha (order-2) y ocupa el resto */}
             <motion.div
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.35, duration: 0.45 }}
-              className="flex-1 flex flex-col min-h-0 min-w-0 p-3 sm:p-4 lg:p-8 lg:border-l lg:border-white/5"
+              className="flex-shrink-0 lg:flex-1 flex flex-col min-h-0 min-w-0 p-3 sm:p-4 lg:p-8 lg:border-l lg:border-white/5 order-2 lg:order-2"
             >
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -451,6 +454,16 @@ export function CelticCrossSpread() {
                 </Link>
               </motion.div>
             </motion.div>
+
+            <AnimatePresence>
+              {lightboxCardIndex !== null && selectedCards[lightboxCardIndex] && (
+                <CardLightbox
+                  reading={selectedCards[lightboxCardIndex]}
+                  positionLabel={positions[lightboxCardIndex]?.nameEs ?? ""}
+                  onClose={() => setLightboxCardIndex(null)}
+                />
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
