@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,6 +15,19 @@ import { generateReadingPdf } from "@/lib/pdf/generateReadingPdf";
 import { cn } from "@/lib/utils/cn";
 
 const positions = spreadPositions["three-card"];
+
+function useIsSmallScreen() {
+  const [isSmall, setIsSmall] = useState(false);
+  useEffect(() => {
+    if (globalThis.window === undefined) return;
+    const mq = globalThis.window.matchMedia("(max-width: 1023px)");
+    const set = () => setIsSmall(mq.matches);
+    set();
+    mq.addEventListener("change", set);
+    return () => mq.removeEventListener("change", set);
+  }, []);
+  return isSmall;
+}
 
 export function ThreeCardSpread() {
   const {
@@ -32,6 +45,13 @@ export function ThreeCardSpread() {
   const [aiText, setAiText] = useState<string | null>(null);
   const [generatingPdf, setGeneratingPdf] = useState(false);
   const [lightboxCardIndex, setLightboxCardIndex] = useState<number | null>(null);
+  const isSmallScreen = useIsSmallScreen();
+  const pickingScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (phase !== "picking") return;
+    pickingScrollRef.current?.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== "revealing" || selectedCards.length < 3) return;
@@ -40,7 +60,7 @@ export function ThreeCardSpread() {
   }, [phase, selectedCards.length, goToRevealed]);
 
   return (
-    <div className="h-[calc(100dvh-52px)] flex flex-col overflow-hidden relative">
+    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden relative">
       <AnimatePresence mode="wait">
         {/* ───────── IDLE ───────── */}
         {phase === "idle" && (
@@ -120,43 +140,19 @@ export function ThreeCardSpread() {
         {/* ───────── PICKING ───────── */}
         {phase === "picking" && (
           <motion.div
+            ref={pickingScrollRef}
             key="picking"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
-            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden"
+            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-visible pt-6 sm:pt-8 lg:pt-12"
           >
-            <div className="lg:w-[70%] flex-shrink-0 flex flex-col items-center justify-center min-h-0 p-4">
-              <motion.h2
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-base sm:text-lg font-medium text-white/80 mb-3 flex-shrink-0"
-              >
-                {positions[pickedCount]?.nameEs ?? "..."} — Carta {pickedCount + 1}/3
-              </motion.h2>
-
-              <div className="flex-1 min-h-0 flex flex-col items-center w-full overflow-hidden">
-                <div className="relative w-full flex-1 min-h-[380px] sm:flex-none sm:w-[800px] sm:h-[640px] sm:min-h-0">
-                  <div className="absolute inset-0 picker-scale-md">
-                    <CardPicker
-                      pickedIndices={pickedVisualIndices}
-                      onPick={pickCard}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <motion.p
-                className="text-white/25 text-xs mt-1 mb-2 flex-shrink-0"
-                animate={{ opacity: [0.25, 0.6, 0.25] }}
-                transition={{ duration: 2.5, repeat: Infinity }}
-              >
-                {pickedCount}/{totalNeeded} cartas seleccionadas
-              </motion.p>
-            </div>
-
-            <div className="lg:w-[30%] flex-shrink-0 flex flex-col items-center justify-center min-h-0 p-4 lg:border-l lg:border-white/5">
-              <div className="flex flex-row gap-3 items-center justify-center flex-wrap">
+            {/* En móvil primero la selección (order-1) para que siempre se vea; en lg va a la derecha (order-2) */}
+            <div className="lg:w-[30%] flex-shrink-0 flex flex-col items-center justify-center min-h-0 p-4 lg:border-l lg:border-white/5 order-1 lg:order-2">
+              <p className="text-[10px] sm:text-xs font-semibold text-white/50 uppercase tracking-wider mb-2 lg:mb-3">
+                Tu selección
+              </p>
+              <div className="flex flex-row gap-2 sm:gap-3 items-center justify-center flex-wrap">
                 {positions.map((pos, i) => {
                   const card = selectedCards[i];
                   return card ? (
@@ -179,7 +175,7 @@ export function ThreeCardSpread() {
                       key={pos.nameEs}
                       className="flex flex-col items-center gap-1 text-white/15"
                     >
-                      <div className="w-40 h-[272px] sm:w-52 sm:h-[357px] rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center">
+                      <div className="w-[26vw] min-w-[80px] max-w-[100px] aspect-[2/3] sm:w-40 sm:min-w-0 sm:max-w-none sm:h-[272px] lg:w-52 lg:h-[357px] rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center flex-shrink-0">
                         <motion.span
                           className="text-2xl"
                           animate={{ opacity: [0.2, 0.6, 0.2] }}
@@ -194,6 +190,36 @@ export function ThreeCardSpread() {
                 })}
               </div>
             </div>
+
+            {/* Selector de cartas: en móvil debajo de la selección (order-2); en lg a la izquierda (order-1) */}
+            <div className="lg:w-[70%] flex-shrink-0 flex flex-col items-center justify-start min-h-0 p-4 order-2 lg:order-1">
+              <motion.h2
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-base sm:text-lg font-medium text-white/80 mb-6 sm:mb-8 lg:mb-10 flex-shrink-0"
+              >
+                {positions[pickedCount]?.nameEs ?? "..."} — Carta {pickedCount + 1}/3
+              </motion.h2>
+
+              <div className="flex-1 min-h-[320px] flex flex-col items-center w-full overflow-visible">
+                <div className="relative w-full flex-1 min-h-[320px] sm:min-h-[380px] sm:flex-none sm:w-[800px] sm:h-[640px] sm:min-h-0 mt-4 sm:mt-6 lg:mt-12">
+                  <div className="absolute inset-0 picker-scale-md overflow-visible">
+                    <CardPicker
+                      pickedIndices={pickedVisualIndices}
+                      onPick={pickCard}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <motion.p
+                className="text-white/25 text-xs mt-1 mb-2 flex-shrink-0"
+                animate={{ opacity: [0.25, 0.6, 0.25] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+              >
+                {pickedCount}/{totalNeeded} cartas seleccionadas
+              </motion.p>
+            </div>
           </motion.div>
         )}
 
@@ -201,7 +227,7 @@ export function ThreeCardSpread() {
         {phase === "revealing" && selectedCards.length === 3 && (
           <motion.div
             key="revealing"
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+            className="fixed inset-0 z-50 flex flex-col min-h-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.6 } }}
@@ -220,14 +246,16 @@ export function ThreeCardSpread() {
               transition={{ duration: 1.2, ease: "easeOut" }}
             />
 
-            <div className="relative z-10 flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center flex-wrap px-4" style={{ perspective: 1200 }}>
+            <div className="relative z-10 flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col items-center py-8 sm:py-10 px-4">
+              <div className="flex flex-col items-center mt-auto mb-auto">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center flex-wrap w-full max-w-4xl" style={{ perspective: 1200 }}>
               {selectedCards.map((rc, i) => {
                 const name = rc.card.nameEs ?? rc.card.name;
                 const pos = positions[i];
                 return (
                   <motion.div
                     key={rc.card.id}
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center flex-shrink-0"
                     initial={{ scale: 0.88, rotateY: 20, opacity: 0 }}
                     animate={{ scale: 1, rotateY: 0, opacity: 1 }}
                     transition={{
@@ -239,7 +267,7 @@ export function ThreeCardSpread() {
                     }}
                   >
                     <div
-                      className="holo-card holo-card-lg w-[min(78vw,280px)] aspect-[10/17] sm:w-[min(42vw,280px)]"
+                      className="holo-card holo-card-lg w-[min(72vw,220px)] aspect-[10/17] sm:w-[min(28vw,180px)] lg:w-[min(280px,20vw)]"
                       style={{ ["--frame" as string]: "12px" }}
                     >
                       <div className="holo-sparkle" />
@@ -272,7 +300,7 @@ export function ThreeCardSpread() {
                   </motion.div>
                 );
               })}
-            </div>
+              </div>
 
             <motion.button
               type="button"
@@ -290,6 +318,8 @@ export function ThreeCardSpread() {
               </span>
               <span className="text-sm">✦</span>
             </motion.button>
+              </div>
+            </div>
           </motion.div>
         )}
 
@@ -300,48 +330,17 @@ export function ThreeCardSpread() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden"
+            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-y-auto lg:overflow-hidden"
           >
-            <motion.div
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.15, duration: 0.4 }}
-              className="flex-shrink-0 flex flex-col items-center justify-center gap-2 p-3 sm:p-4 lg:p-8 lg:w-[55%]"
-            >
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center sm:items-stretch flex-wrap w-full">
-                {selectedCards.map((rc, i) => (
-                  <button
-                    key={rc.card.id}
-                    type="button"
-                    className="flex flex-col items-center cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg w-full max-w-[280px] sm:max-w-none"
-                    onClick={() => setLightboxCardIndex(i)}
-                  >
-                    <RevealedCard
-                      reading={rc}
-                      index={i}
-                      positionLabel={positions[i].nameEs}
-                      size="xl"
-                    />
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-
-            <AnimatePresence>
-              {lightboxCardIndex !== null && selectedCards[lightboxCardIndex] && (
-                <CardLightbox
-                  reading={selectedCards[lightboxCardIndex]}
-                  positionLabel={positions[lightboxCardIndex]?.nameEs ?? ""}
-                  onClose={() => setLightboxCardIndex(null)}
-                />
-              )}
-            </AnimatePresence>
-
+            {/* En pantallas pequeñas: interpretación debajo de las cartas (order-2); en lg a la derecha (order-2) */}
             <motion.div
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.35, duration: 0.45 }}
-              className="flex-1 flex flex-col min-h-0 min-w-0 p-3 sm:p-4 lg:p-8 lg:border-l lg:border-white/5"
+              className={cn(
+                "flex-1 flex flex-col min-h-0 min-w-0 p-3 sm:p-4 lg:p-8 lg:border-l lg:border-white/5",
+                "order-2 lg:order-2"
+              )}
             >
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -408,6 +407,48 @@ export function ThreeCardSpread() {
                 </Link>
               </motion.div>
             </motion.div>
+
+            {/* Cartas: en móvil arriba (order-1); en lg a la izquierda (order-1) */}
+            <motion.div
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.15, duration: 0.4 }}
+              className={cn(
+                "flex flex-col items-center justify-center gap-2 p-3 sm:p-4 lg:p-8",
+                "order-1 lg:order-1",
+                "w-full min-w-0 lg:w-[55%] lg:min-w-0",
+                "mx-auto lg:mx-0",
+                "overflow-x-auto overflow-y-visible"
+              )}
+            >
+              <div className="flex flex-row gap-3 sm:gap-6 justify-center items-center flex-shrink-0 pb-2">
+                {selectedCards.map((rc, i) => (
+                  <button
+                    key={rc.card.id}
+                    type="button"
+                    className="flex flex-col items-center cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg flex-shrink-0 w-[28vw] min-w-[100px] max-w-[140px] sm:min-w-0 sm:max-w-[160px] sm:w-auto lg:max-w-none"
+                    onClick={() => setLightboxCardIndex(i)}
+                  >
+                    <RevealedCard
+                      reading={rc}
+                      index={i}
+                      positionLabel={positions[i].nameEs}
+                      size={isSmallScreen ? "md" : "xl"}
+                    />
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+
+            <AnimatePresence>
+              {lightboxCardIndex !== null && selectedCards[lightboxCardIndex] && (
+                <CardLightbox
+                  reading={selectedCards[lightboxCardIndex]}
+                  positionLabel={positions[lightboxCardIndex]?.nameEs ?? ""}
+                  onClose={() => setLightboxCardIndex(null)}
+                />
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>

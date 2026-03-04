@@ -78,7 +78,7 @@ export function DailyCardSpread() {
     : "";
 
   return (
-    <div className="h-[calc(100dvh-52px)] flex flex-col overflow-hidden relative">
+    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden relative">
       <AnimatePresence mode="wait">
         {/* ───────── IDLE ───────── */}
         {phase === "idle" && (
@@ -162,20 +162,20 @@ export function DailyCardSpread() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
-            className="flex-1 flex flex-col items-center justify-center min-h-0 overflow-hidden px-4"
+            className="flex-1 flex flex-col items-center justify-start min-h-0 overflow-visible px-4 pt-6 sm:pt-8 lg:pt-12 pb-4"
           >
             <motion.h2
               key="pick-label"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-base sm:text-lg font-medium text-white/80 mb-3 flex-shrink-0"
+              className="text-base sm:text-lg font-medium text-white/80 mb-6 sm:mb-8 lg:mb-10 flex-shrink-0"
             >
               Elige tu carta del día
             </motion.h2>
 
-            <div className="flex-1 min-h-0 flex flex-col items-center w-full overflow-hidden">
-              <div className="relative w-full flex-1 min-h-[380px] sm:flex-none sm:w-[800px] sm:h-[640px] sm:min-h-0">
-                <div className="absolute inset-0 picker-scale-md">
+            <div className="flex-1 min-h-0 flex flex-col items-center w-full overflow-visible">
+              <div className="relative w-full flex-1 min-h-[380px] sm:flex-none sm:w-[800px] sm:h-[640px] sm:min-h-0 mt-6 sm:mt-8 lg:mt-12">
+                <div className="absolute inset-0 picker-scale-md overflow-visible">
                   <CardPicker
                     pickedIndices={pickedVisualIndices}
                     onPick={pickCard}
@@ -316,7 +316,7 @@ export function DailyCardSpread() {
                 className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden"
               >
                 {/* ── LEFT: Card (clickable → lightbox) ── */}
-                <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1 p-3 sm:p-4 lg:p-8 lg:w-[55%]">
+                <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1 p-3 sm:p-4 lg:p-6 xl:p-8 w-full max-w-[320px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-none lg:w-[48%] xl:w-[52%] mx-auto lg:mx-0">
                   <motion.span
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -345,7 +345,7 @@ export function DailyCardSpread() {
                       aria-hidden="true"
                       onMouseMove={handleMouseMove}
                       onMouseLeave={handleMouseLeave}
-                      className="holo-card holo-card-lg w-[min(88vw,280px)] max-w-[280px] aspect-[10/17] shrink-0"
+                      className="holo-card holo-card-lg w-[min(85vw,220px)] sm:w-[min(88vw,240px)] md:w-[min(88vw,260px)] lg:w-[min(88vw,280px)] max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] aspect-[10/17] shrink-0"
                       style={{ ["--frame" as string]: "10px" }}
                     >
                       <div className="holo-sparkle" />

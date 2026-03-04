@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { fullDeck, shuffleArray } from "@/lib/cards/tarotDeck";
 import { spreadPositions, spreadSizes } from "@/lib/cards/spreads";
 import { useReadingsStore } from "@/lib/store/readingsStore";
@@ -19,6 +19,14 @@ export function useTarotReading(spreadType: SpreadType) {
   const positions = spreadPositions[spreadType];
   const pickedCount = selectedCards.length;
   const isComplete = pickedCount >= totalNeeded;
+
+  /** Tiempo (ms) para ver las 3 cartas en "Tu selección" antes de abrir el modal de revelación */
+  const PREVIEW_BEFORE_REVEAL_MS = 2500;
+  const previewTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (previewTimeoutRef.current) clearTimeout(previewTimeoutRef.current);
+  }, []);
 
   const startReading = useCallback(() => {
     setPhase("shuffling");
@@ -53,8 +61,11 @@ export function useTarotReading(spreadType: SpreadType) {
       setPickedVisualIndices(newIndices);
 
       if (newCards.length >= totalNeeded) {
-        // Transición inmediata a revealing para que el modal se muestre en el mismo ciclo
-        setPhase("revealing");
+        // Pausa para previsualizar las 3 cartas en "Tu selección" antes del modal
+        previewTimeoutRef.current = setTimeout(() => {
+          previewTimeoutRef.current = null;
+          setPhase("revealing");
+        }, PREVIEW_BEFORE_REVEAL_MS);
       }
     },
     [phase, isComplete, shuffledDeck, selectedCards, pickedVisualIndices, positions, totalNeeded]
@@ -78,6 +89,10 @@ export function useTarotReading(spreadType: SpreadType) {
   );
 
   const reset = useCallback(() => {
+    if (previewTimeoutRef.current) {
+      clearTimeout(previewTimeoutRef.current);
+      previewTimeoutRef.current = null;
+    }
     setShuffledDeck([]);
     setSelectedCards([]);
     setPickedVisualIndices([]);

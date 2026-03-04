@@ -40,7 +40,7 @@ export function CelticCrossSpread() {
   }, [phase, selectedCards.length, totalNeeded, goToRevealed]);
 
   return (
-    <div className="h-[calc(100dvh-52px)] flex flex-col overflow-hidden relative">
+    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden relative">
       <AnimatePresence mode="wait">
         {/* ───────── IDLE ───────── */}
         {phase === "idle" && (
@@ -130,9 +130,9 @@ export function CelticCrossSpread() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
-            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden"
+            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-visible pt-6 sm:pt-8 lg:pt-12"
           >
-            <div className="lg:w-[70%] flex-shrink-0 flex flex-col items-center justify-center min-h-0 p-4">
+            <div className="lg:w-[70%] flex-shrink-0 flex flex-col items-center justify-start min-h-0 p-4">
               <motion.h2
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -142,7 +142,7 @@ export function CelticCrossSpread() {
               </motion.h2>
 
               {/* Contador 4/10 + barra de progreso */}
-              <div className="flex flex-col items-center gap-2 mb-3 flex-shrink-0 w-full max-w-[280px]">
+              <div className="flex flex-col items-center gap-2 mb-4 sm:mb-6 lg:mb-8 flex-shrink-0 w-full max-w-[280px]">
                 <div className="flex items-baseline gap-2">
                   <span className="text-2xl sm:text-3xl font-bold text-white/95 tabular-nums">
                     {pickedCount}
@@ -174,9 +174,9 @@ export function CelticCrossSpread() {
                 </div>
               </div>
 
-              <div className="flex-1 min-h-0 flex flex-col items-center w-full overflow-hidden">
-                <div className="relative w-full flex-1 min-h-[380px] sm:flex-none sm:w-[800px] sm:h-[640px] sm:min-h-0">
-                  <div className="absolute inset-0 picker-scale-md">
+              <div className="flex-1 min-h-0 flex flex-col items-center w-full overflow-visible">
+                <div className="relative w-full flex-1 min-h-[380px] sm:flex-none sm:w-[800px] sm:h-[640px] sm:min-h-0 mt-6 sm:mt-8 lg:mt-12">
+                  <div className="absolute inset-0 picker-scale-md overflow-visible">
                     <CardPicker
                       pickedIndices={pickedVisualIndices}
                       onPick={pickCard}
