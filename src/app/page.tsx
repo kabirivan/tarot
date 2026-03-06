@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { LiveClock } from "@/components/home/LiveClock";
 
 const container = {
   hidden: { opacity: 0 },
@@ -358,6 +359,10 @@ export default function HomePage() {
                 </span>{" "}
                 lecturas realizadas
               </motion.p>
+
+              <motion.div variants={item} className="flex justify-center lg:justify-start">
+                <LiveClock />
+              </motion.div>
 
               <motion.p variants={item} className="text-[11px] text-white/35 tracking-wide">
                 Sin registro · Gratis · En español · 78 cartas
