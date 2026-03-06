@@ -28,25 +28,25 @@
       calc(var(--mx) * 180deg + 20deg),
       transparent 0px,
       transparent 2px,
-      rgba(255, 255, 255, 0.045) 2px,
-      rgba(255, 255, 255, 0.045) 3px
+      rgba(255, 255, 255, 0.028) 2px,
+      rgba(255, 255, 255, 0.028) 3px
     ),
-    /* Main iridescent colour layer */
+    /* Main iridescent colour layer — reduced opacity for softer look */
     linear-gradient(
       calc(var(--mx) * 360deg),
-      hsl(270, 80%, 52%) 0%,
-      hsl(330, 85%, 58%) 20%,
-      hsl(40,  90%, 55%) 40%,
-      hsl(160, 80%, 46%) 60%,
-      hsl(210, 88%, 56%) 80%,
-      hsl(270, 80%, 52%) 100%
+      hsla(270, 80%, 52%, 0.72) 0%,
+      hsla(330, 85%, 58%, 0.72) 20%,
+      hsla(40,  90%, 55%, 0.72) 40%,
+      hsla(160, 80%, 46%, 0.72) 60%,
+      hsla(210, 88%, 56%, 0.72) 80%,
+      hsla(270, 80%, 52%, 0.72) 100%
     );
   background-size: auto, 200% 200%;
 
   box-shadow:
-    0 0 20px rgba(139, 92, 246, 0.40),
-    0 0 42px rgba(236, 72, 153, 0.20),
-    0 6px 22px rgba(0, 0, 0, 0.42);
+    0 0 20px rgba(139, 92, 246, 0.22),
+    0 0 42px rgba(236, 72, 153, 0.12),
+    0 6px 22px rgba(0, 0, 0, 0.35);
   animation: holo-glow-pulse 7s ease-in-out infinite;
 }
 
@@ -59,8 +59,8 @@
    Full-spectrum HSL bands — color-dodge
    ──────────────────────────────────────── */
 @keyframes holo-shine {
-  0%, 100% { opacity: 0.52; filter: brightness(1.30) saturate(1.90); }
-  50%       { opacity: 0.80; filter: brightness(1.58) saturate(2.40); }
+  0%, 100% { opacity: 0.32; filter: brightness(1.20) saturate(1.50); }
+  50%       { opacity: 0.50; filter: brightness(1.35) saturate(1.80); }
 }
 
 @keyframes holo-diagonal-sweep {
@@ -75,10 +75,10 @@
   z-index: 20;
   border-radius: inherit;
   pointer-events: none;
-  opacity: 0.52;
+  opacity: 0.34;
   transition: opacity 0.28s ease, filter 0.28s ease;
   mix-blend-mode: color-dodge;
-  filter: brightness(1.30) saturate(1.90) contrast(1.05);
+  filter: brightness(1.20) saturate(1.50) contrast(1.05);
   background-size: 280% 280%;
   background-position: -200% -200%;
   animation:
@@ -104,8 +104,8 @@
 }
 
 .holo-card:hover::before {
-  opacity: 0.85;
-  filter: brightness(1.58) saturate(2.50) contrast(1.10);
+  opacity: 0.55;
+  filter: brightness(1.38) saturate(2.0) contrast(1.08);
   animation-duration: 5s, 6s;
 }
 
@@ -121,51 +121,51 @@
   z-index: 21;
   border-radius: inherit;
   pointer-events: none;
-  opacity: 0.52;
+  opacity: 0.38;
   transition: opacity 0.25s ease, background 0.14s ease;
   mix-blend-mode: screen;
   background:
     /* Primary specular — soft blob top-left */
     radial-gradient(
       ellipse 65% 42% at 35% 28%,
-      rgba(255, 255, 255, 0.62) 0%,
-      rgba(255, 255, 255, 0.16) 30%,
+      rgba(255, 255, 255, 0.38) 0%,
+      rgba(255, 255, 255, 0.10) 30%,
       transparent 58%
     ),
     /* Secondary cooler glare — bottom-right */
     radial-gradient(
       circle at 72% 76%,
-      rgba(190, 210, 255, 0.24) 0%,
+      rgba(190, 210, 255, 0.14) 0%,
       transparent 38%
     );
 }
 
 .holo-card:hover::after {
-  opacity: 1;
+  opacity: 0.72;
   background:
     /* Main glare follows cursor */
     radial-gradient(
       ellipse 52% 36% at calc(var(--mx) * 100%) calc(var(--my) * 100%),
-      rgba(255, 255, 255, 0.92) 0%,
-      rgba(255, 255, 255, 0.36) 20%,
+      rgba(255, 255, 255, 0.58) 0%,
+      rgba(255, 255, 255, 0.22) 20%,
       transparent 52%
     ),
     /* Lens-flare — horizontal streak */
     linear-gradient(
       90deg,
       transparent                              calc(var(--mx) * 100% - 20%),
-      rgba(255, 255, 255, 0.07)                calc(var(--mx) * 100% - 7%),
-      rgba(255, 255, 255, 0.18)                calc(var(--mx) * 100%),
-      rgba(255, 255, 255, 0.07)                calc(var(--mx) * 100% + 7%),
+      rgba(255, 255, 255, 0.04)                calc(var(--mx) * 100% - 7%),
+      rgba(255, 255, 255, 0.11)                calc(var(--mx) * 100%),
+      rgba(255, 255, 255, 0.04)                calc(var(--mx) * 100% + 7%),
       transparent                              calc(var(--mx) * 100% + 20%)
     ),
     /* Lens-flare — vertical streak */
     linear-gradient(
       0deg,
       transparent                              calc(var(--my) * 100% - 20%),
-      rgba(255, 255, 255, 0.05)                calc(var(--my) * 100% - 7%),
-      rgba(255, 255, 255, 0.13)                calc(var(--my) * 100%),
-      rgba(255, 255, 255, 0.05)                calc(var(--my) * 100% + 7%),
+      rgba(255, 255, 255, 0.03)                calc(var(--my) * 100% - 7%),
+      rgba(255, 255, 255, 0.08)                calc(var(--my) * 100%),
+      rgba(255, 255, 255, 0.03)                calc(var(--my) * 100% + 7%),
       transparent                              calc(var(--my) * 100% + 20%)
     );
 }
@@ -177,29 +177,29 @@
 @keyframes holo-glow-pulse {
   0%, 100% {
     box-shadow:
-      0 0 18px rgba(139, 92, 246, 0.44),
-      0 0 38px rgba(236, 72, 153, 0.20),
-      0 6px 20px rgba(0, 0, 0, 0.38);
+      0 0 18px rgba(139, 92, 246, 0.26),
+      0 0 38px rgba(236, 72, 153, 0.12),
+      0 6px 20px rgba(0, 0, 0, 0.32);
   }
   28% {
     box-shadow:
-      0 0 26px rgba(236, 72, 153, 0.54),
-      0 0 52px rgba(245, 158, 11, 0.30),
-      0 0 78px rgba(245, 158, 11, 0.10),
-      0 6px 22px rgba(0, 0, 0, 0.44);
+      0 0 26px rgba(236, 72, 153, 0.32),
+      0 0 52px rgba(245, 158, 11, 0.18),
+      0 0 78px rgba(245, 158, 11, 0.06),
+      0 6px 22px rgba(0, 0, 0, 0.36);
   }
   55% {
     box-shadow:
-      0 0 22px rgba(59, 130, 246, 0.50),
-      0 0 46px rgba(16, 185, 129, 0.28),
-      0 0 68px rgba(139, 92, 246, 0.10),
-      0 6px 20px rgba(0, 0, 0, 0.40);
+      0 0 22px rgba(59, 130, 246, 0.30),
+      0 0 46px rgba(16, 185, 129, 0.16),
+      0 0 68px rgba(139, 92, 246, 0.06),
+      0 6px 20px rgba(0, 0, 0, 0.34);
   }
   80% {
     box-shadow:
-      0 0 20px rgba(139, 92, 246, 0.48),
-      0 0 40px rgba(236, 72, 153, 0.22),
-      0 6px 20px rgba(0, 0, 0, 0.38);
+      0 0 20px rgba(139, 92, 246, 0.28),
+      0 0 40px rgba(236, 72, 153, 0.14),
+      0 6px 20px rgba(0, 0, 0, 0.32);
   }
 }
 
@@ -207,20 +207,20 @@
   animation: none;
   transform: perspective(800px) rotateX(var(--rx)) rotateY(var(--ry));
   box-shadow:
-    0 0 28px rgba(139, 92, 246, 0.62),
-    0 0 58px rgba(236, 72, 153, 0.42),
-    0 0 86px rgba(245, 158, 11, 0.22),
-    0 10px 36px rgba(0, 0, 0, 0.54);
+    0 0 28px rgba(139, 92, 246, 0.38),
+    0 0 58px rgba(236, 72, 153, 0.26),
+    0 0 86px rgba(245, 158, 11, 0.14),
+    0 10px 36px rgba(0, 0, 0, 0.44);
 }
 
 /* ────────────────────────────────────────
    Sparkle glitter — 14 points, hue-rotates
    ──────────────────────────────────────── */
 @keyframes holo-sparkle-anim {
-  0%,  100% { opacity: 0.52; filter: brightness(1.0) hue-rotate(0deg); }
-  22%        { opacity: 0.88; filter: brightness(1.6) hue-rotate(72deg); }
-  50%        { opacity: 0.68; filter: brightness(1.4) hue-rotate(165deg); }
-  75%        { opacity: 0.92; filter: brightness(1.7) hue-rotate(255deg); }
+  0%,  100% { opacity: 0.32; filter: brightness(1.0) hue-rotate(0deg); }
+  22%        { opacity: 0.54; filter: brightness(1.35) hue-rotate(72deg); }
+  50%        { opacity: 0.42; filter: brightness(1.25) hue-rotate(165deg); }
+  75%        { opacity: 0.58; filter: brightness(1.4) hue-rotate(255deg); }
 }
 
 .holo-card .holo-sparkle {
@@ -229,29 +229,29 @@
   z-index: 22;
   border-radius: inherit;
   pointer-events: none;
-  opacity: 0.56;
+  opacity: 0.36;
   transition: opacity 0.28s ease;
   mix-blend-mode: overlay;
   animation: holo-sparkle-anim 10s ease-in-out infinite;
   background:
-    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.42) 0%, transparent 2.2%),
-    radial-gradient(circle at 88% 12%, rgba(255,255,255,0.36) 0%, transparent 2.0%),
-    radial-gradient(circle at 48% 88%, rgba(255,255,255,0.32) 0%, transparent 1.8%),
-    radial-gradient(circle at  7% 76%, rgba(255,255,255,0.40) 0%, transparent 2.4%),
-    radial-gradient(circle at 93% 68%, rgba(255,255,255,0.30) 0%, transparent 2.0%),
-    radial-gradient(circle at 33%  7%, rgba(255,255,255,0.24) 0%, transparent 1.5%),
-    radial-gradient(circle at 68% 46%, rgba(255,255,255,0.22) 0%, transparent 1.5%),
-    radial-gradient(circle at 22% 54%, rgba(255,255,255,0.32) 0%, transparent 2.0%),
-    radial-gradient(circle at 79% 30%, rgba(255,255,255,0.26) 0%, transparent 1.8%),
-    radial-gradient(circle at 54% 22%, rgba(255,255,255,0.34) 0%, transparent 2.2%),
-    radial-gradient(circle at 14% 40%, rgba(255,255,255,0.20) 0%, transparent 1.4%),
-    radial-gradient(circle at 84% 86%, rgba(255,255,255,0.28) 0%, transparent 1.8%),
-    radial-gradient(circle at 44% 64%, rgba(255,255,255,0.18) 0%, transparent 1.2%),
-    radial-gradient(circle at 62% 80%, rgba(255,255,255,0.24) 0%, transparent 1.5%);
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.26) 0%, transparent 2.2%),
+    radial-gradient(circle at 88% 12%, rgba(255,255,255,0.22) 0%, transparent 2.0%),
+    radial-gradient(circle at 48% 88%, rgba(255,255,255,0.20) 0%, transparent 1.8%),
+    radial-gradient(circle at  7% 76%, rgba(255,255,255,0.24) 0%, transparent 2.4%),
+    radial-gradient(circle at 93% 68%, rgba(255,255,255,0.18) 0%, transparent 2.0%),
+    radial-gradient(circle at 33%  7%, rgba(255,255,255,0.15) 0%, transparent 1.5%),
+    radial-gradient(circle at 68% 46%, rgba(255,255,255,0.14) 0%, transparent 1.5%),
+    radial-gradient(circle at 22% 54%, rgba(255,255,255,0.20) 0%, transparent 2.0%),
+    radial-gradient(circle at 79% 30%, rgba(255,255,255,0.16) 0%, transparent 1.8%),
+    radial-gradient(circle at 54% 22%, rgba(255,255,255,0.21) 0%, transparent 2.2%),
+    radial-gradient(circle at 14% 40%, rgba(255,255,255,0.12) 0%, transparent 1.4%),
+    radial-gradient(circle at 84% 86%, rgba(255,255,255,0.17) 0%, transparent 1.8%),
+    radial-gradient(circle at 44% 64%, rgba(255,255,255,0.11) 0%, transparent 1.2%),
+    radial-gradient(circle at 62% 80%, rgba(255,255,255,0.15) 0%, transparent 1.5%);
 }
 
 .holo-card:hover .holo-sparkle {
-  opacity: 1;
+  opacity: 0.62;
 }
 
 /* ────────────────────────────────────────
@@ -272,13 +272,13 @@
    Outer border — rainbow cycling highlight
    ──────────────────────────────────────── */
 @keyframes holo-border-rainbow {
-  0%   { border-color: rgba(139, 92, 246, 0.40); }
-  17%  { border-color: rgba(236, 72, 153, 0.44); }
-  34%  { border-color: rgba(245, 158, 11, 0.42); }
-  50%  { border-color: rgba(16, 185, 129, 0.40); }
-  67%  { border-color: rgba(59, 130, 246, 0.42); }
-  84%  { border-color: rgba(168, 85, 247, 0.42); }
-  100% { border-color: rgba(139, 92, 246, 0.40); }
+  0%   { border-color: rgba(139, 92, 246, 0.24); }
+  17%  { border-color: rgba(236, 72, 153, 0.26); }
+  34%  { border-color: rgba(245, 158, 11, 0.25); }
+  50%  { border-color: rgba(16, 185, 129, 0.24); }
+  67%  { border-color: rgba(59, 130, 246, 0.25); }
+  84%  { border-color: rgba(168, 85, 247, 0.25); }
+  100% { border-color: rgba(139, 92, 246, 0.24); }
 }
 
 .holo-card .holo-border {
@@ -287,14 +287,14 @@
   z-index: 23;
   border-radius: inherit;
   pointer-events: none;
-  border: 1.5px solid rgba(255, 255, 255, 0.24);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
   transition: border-color 0.25s ease, border-width 0.15s ease;
   animation: holo-border-rainbow 12s linear infinite;
 }
 
 .holo-card:hover .holo-border {
   border-width: 2px;
-  border-color: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.38);
   animation: none;
 }
 
@@ -308,6 +308,6 @@
   .holo-card .holo-border {
     animation: none;
   }
-  .holo-card::before { opacity: 0.45; }
-  .holo-card .holo-sparkle { opacity: 0.50; }
+  .holo-card::before { opacity: 0.28; }
+  .holo-card .holo-sparkle { opacity: 0.30; }
 }
