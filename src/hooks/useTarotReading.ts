@@ -1,6 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+
+function incrementCounter(spreadType: string) {
+  fetch("/api/counter", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ spreadType }),
+  }).catch(() => {
+    // Silencioso — el contador nunca debe romper la lectura
+  });
+}
 import { fullDeck, shuffleArray } from "@/lib/cards/tarotDeck";
 import { spreadPositions, spreadSizes } from "@/lib/cards/spreads";
 import { useReadingsStore } from "@/lib/store/readingsStore";
@@ -14,6 +24,8 @@ export function useTarotReading(spreadType: SpreadType) {
   const [pickedVisualIndices, setPickedVisualIndices] = useState<number[]>([]);
   const [phase, setPhase] = useState<ReadingPhase>("idle");
   const addReading = useReadingsStore((s) => s.addReading);
+  // Guard para contar exactamente una vez por sesión de lectura
+  const hasCountedRef = useRef(false);
 
   const totalNeeded = spreadSizes[spreadType];
   const positions = spreadPositions[spreadType];
@@ -73,7 +85,11 @@ export function useTarotReading(spreadType: SpreadType) {
 
   const goToRevealed = useCallback(() => {
     setPhase("revealed");
-  }, []);
+    if (!hasCountedRef.current) {
+      hasCountedRef.current = true;
+      incrementCounter(spreadType);
+    }
+  }, [spreadType]);
 
   const saveReading = useCallback(
     (question?: string) => {
@@ -93,6 +109,7 @@ export function useTarotReading(spreadType: SpreadType) {
       clearTimeout(previewTimeoutRef.current);
       previewTimeoutRef.current = null;
     }
+    hasCountedRef.current = false;
     setShuffledDeck([]);
     setSelectedCards([]);
     setPickedVisualIndices([]);

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { RecentReadings } from "@/components/dashboard/RecentReadings";
 
 const container = {
@@ -56,7 +57,19 @@ const spreads = [
   },
 ];
 
+function useReadingCount() {
+  const [count, setCount] = useState<number | null>(null);
+  useEffect(() => {
+    fetch("/api/counter")
+      .then((r) => r.json())
+      .then((d) => setCount(d.total ?? null))
+      .catch(() => {});
+  }, []);
+  return count;
+}
+
 export default function DashboardPage() {
+  const readingCount = useReadingCount();
   return (
     <div className="h-full flex flex-col max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full">
       <motion.div
@@ -66,7 +79,20 @@ export default function DashboardPage() {
         transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
       >
         <h1 className="font-display text-2xl sm:text-3xl font-bold mb-1">Dashboard</h1>
-        <p className="text-white/50 text-sm">Elige un tipo de lectura para comenzar.</p>
+        <div className="flex items-center gap-3 mt-1">
+          <p className="text-white/50 text-sm">Elige un tipo de lectura para comenzar.</p>
+          {readingCount !== null && (
+            <motion.span
+              initial={{ opacity: 0, x: -6 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 border border-primary/25 text-primary/80 text-xs font-medium"
+            >
+              <span className="text-[10px]">✦</span>
+              {readingCount.toLocaleString("es")} lecturas realizadas
+            </motion.span>
+          )}
+        </div>
       </motion.div>
 
       <motion.div
