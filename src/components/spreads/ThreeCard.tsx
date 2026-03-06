@@ -11,7 +11,6 @@ import { ShuffleAnimation } from "@/components/cards/ShuffleAnimation";
 import { RevealedCard } from "@/components/cards/RevealedCard";
 import { CardLightbox } from "@/components/cards/CardLightbox";
 import { AIInterpretation } from "@/components/cards/AIInterpretation";
-import { generateReadingPdf } from "@/lib/pdf/generateReadingPdf";
 import { cn } from "@/lib/utils/cn";
 
 const positions = spreadPositions["three-card"];
@@ -43,7 +42,6 @@ export function ThreeCardSpread() {
   } = useTarotReading("three-card");
 
   const [aiText, setAiText] = useState<string | null>(null);
-  const [generatingPdf, setGeneratingPdf] = useState(false);
   const [lightboxCardIndex, setLightboxCardIndex] = useState<number | null>(null);
   const isSmallScreen = useIsSmallScreen();
   const pickingScrollRef = useRef<HTMLDivElement>(null);
@@ -409,22 +407,6 @@ export function ThreeCardSpread() {
                 transition={{ delay: 0.85 }}
                 className="flex flex-wrap gap-2 pt-3 flex-shrink-0 border-t border-white/5 mt-3"
               >
-                <button
-                  type="button"
-                  disabled={generatingPdf}
-                  onClick={async () => {
-                    setGeneratingPdf(true);
-                    await generateReadingPdf({
-                      spreadType: "three-card",
-                      cards: selectedCards,
-                      interpretation: aiText ?? undefined,
-                    });
-                    setGeneratingPdf(false);
-                  }}
-                  className="px-4 py-2 rounded-lg bg-success/20 text-success text-sm font-medium border border-success/40 hover:bg-success/30 transition disabled:opacity-60"
-                >
-                  {generatingPdf ? "Generando PDF…" : "Descargar PDF"}
-                </button>
                 <button
                   type="button"
                   onClick={reset}

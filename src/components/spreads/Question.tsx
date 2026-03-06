@@ -11,7 +11,6 @@ import { ShuffleAnimation } from "@/components/cards/ShuffleAnimation";
 import { AIInterpretation } from "@/components/cards/AIInterpretation";
 import { CardLightbox } from "@/components/cards/CardLightbox";
 import { cn } from "@/lib/utils/cn";
-import { generateReadingPdf } from "@/lib/pdf/generateReadingPdf";
 
 const position = spreadPositions.question[0];
 
@@ -27,7 +26,6 @@ export function QuestionSpread() {
   } = useTarotReading("question");
 
   const [aiText, setAiText] = useState<string | null>(null);
-  const [generatingPdf, setGeneratingPdf] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [question, setQuestion] = useState("");
 
@@ -431,23 +429,6 @@ export function QuestionSpread() {
                   transition={{ delay: 0.85 }}
                   className="flex flex-wrap gap-2 pt-3 flex-shrink-0 border-t border-white/5 mt-3"
                 >
-                  <button
-                    type="button"
-                    disabled={generatingPdf}
-                    onClick={async () => {
-                      setGeneratingPdf(true);
-                      await generateReadingPdf({
-                        spreadType: "question",
-                        cards: selectedCards,
-                        interpretation: aiText ?? undefined,
-                        question,
-                      });
-                      setGeneratingPdf(false);
-                    }}
-                    className="px-4 py-2 rounded-lg bg-success/20 text-success text-sm font-medium border border-success/40 hover:bg-success/30 transition disabled:opacity-60"
-                  >
-                    {generatingPdf ? "Generando PDF…" : "Descargar PDF"}
-                  </button>
                   <button
                     type="button"
                     onClick={reset}
