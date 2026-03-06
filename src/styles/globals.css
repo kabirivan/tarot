@@ -93,3 +93,33 @@
 
 @import './holographic.css';
 @import './animations.css';
+
+/* ── Custom scrollbar for reading panels ── */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+}
+.overflow-y-auto::-webkit-scrollbar { width: 3px; }
+.overflow-y-auto::-webkit-scrollbar-track { background: transparent; }
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(139, 92, 246, 0.3);
+  border-radius: 3px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(139, 92, 246, 0.5);
+}
+
+/* ── Mystical textarea for question spreads ── */
+.mystical-textarea {
+  @apply w-full rounded-xl bg-black/30 border border-white/10 px-4 py-3 text-sm text-white/85 resize-none;
+  @apply placeholder:text-white/20 transition-all duration-300;
+  @apply focus:outline-none;
+  font-family: var(--font-body);
+}
+.mystical-textarea:focus {
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.1),
+    inset 0 0 20px rgba(245, 158, 11, 0.03),
+    0 0 25px rgba(245, 158, 11, 0.07);
+  background-color: rgba(0, 0, 0, 0.35);
+}
