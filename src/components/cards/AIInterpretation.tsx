@@ -140,7 +140,7 @@ export function AIInterpretation({
             <span>✨</span> Interpretado por XAVI
           </motion.h3>
           <motion.div
-            className="text-sm sm:text-base text-white/85 leading-relaxed whitespace-pre-line space-y-2"
+            className="text-base sm:text-lg text-white/85 leading-relaxed whitespace-pre-line space-y-2"
             variants={container}
             initial="hidden"
             animate="show"
