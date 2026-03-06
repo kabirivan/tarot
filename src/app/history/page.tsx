@@ -23,7 +23,7 @@ export default function HistoryPage() {
           <button
             type="button"
             onClick={clearHistory}
-            className="text-sm text-accent hover:underline"
+            className="text-sm text-accent hover:underline min-h-[44px] inline-flex items-center px-2"
           >
             Borrar todo
           </button>

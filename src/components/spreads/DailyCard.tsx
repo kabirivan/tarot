@@ -78,7 +78,7 @@ export function DailyCardSpread() {
     : "";
 
   return (
-    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden relative">
+    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-y-auto overflow-x-hidden relative">
       <AnimatePresence mode="wait">
         {/* ───────── IDLE ───────── */}
         {phase === "idle" && (
@@ -88,7 +88,7 @@ export function DailyCardSpread() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.5 }}
-            className="flex-1 flex flex-col items-center justify-center gap-7 px-6 relative overflow-hidden"
+            className="flex-1 flex flex-col items-center justify-center gap-7 px-6 py-6 relative overflow-y-auto overflow-x-hidden"
           >
             {/* Atmospheric star decorations */}
             <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">

@@ -60,7 +60,7 @@ export function ThreeCardSpread() {
   }, [phase, selectedCards.length, goToRevealed]);
 
   return (
-    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden relative">
+    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-y-auto overflow-x-hidden relative">
       <AnimatePresence mode="wait">
         {/* ───────── IDLE ───────── */}
         {phase === "idle" && (
@@ -70,7 +70,7 @@ export function ThreeCardSpread() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.5 }}
-            className="flex-1 flex flex-col items-center justify-center gap-7 px-6 relative overflow-hidden"
+            className="flex-1 flex flex-col items-center justify-center gap-7 px-6 py-6 relative overflow-y-auto overflow-x-hidden"
           >
             {/* Atmospheric star decorations */}
             <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
@@ -127,7 +127,7 @@ export function ThreeCardSpread() {
                 <p className="text-secondary/55 text-[10px] tracking-[0.35em] uppercase font-medium mb-3">
                   Tirada de tres cartas
                 </p>
-                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-light italic text-white/95 leading-tight">
+                <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-light italic text-white/95 leading-tight">
                   Pasado · Presente · Futuro
                 </h1>
               </motion.div>

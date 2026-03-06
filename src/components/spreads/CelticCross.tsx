@@ -46,7 +46,7 @@ export function CelticCrossSpread() {
   }, [phase, selectedCards.length, totalNeeded, goToRevealed]);
 
   return (
-    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-hidden relative">
+    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-y-auto overflow-x-hidden relative">
       <AnimatePresence mode="wait">
         {/* ───────── IDLE ───────── */}
         {phase === "idle" && (
@@ -56,7 +56,7 @@ export function CelticCrossSpread() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.5 }}
-            className="flex-1 flex flex-col items-center justify-center gap-7 px-6 relative overflow-hidden"
+            className="flex-1 flex flex-col items-center justify-center gap-7 px-6 py-6 relative overflow-y-auto overflow-x-hidden"
           >
             {/* Atmospheric star decorations */}
             <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
@@ -212,10 +212,10 @@ export function CelticCrossSpread() {
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-5 gap-2 sm:gap-3 opacity-15 max-w-[420px]">
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3 opacity-15 w-full max-w-[420px]">
                   {positions.slice(0, 5).map((pos) => (
                     <div key={pos.nameEs} className="flex flex-col items-center gap-1">
-                      <div className="w-24 h-[164px] sm:w-28 sm:h-[191px] rounded-xl border border-dashed border-secondary/20 flex items-center justify-center">
+                      <div className="w-full aspect-[2/3] rounded-xl border border-dashed border-secondary/20 flex items-center justify-center">
                         <span className="text-lg text-secondary/30">✦</span>
                       </div>
                       <span className="text-[10px] text-secondary/25 text-center truncate w-full">

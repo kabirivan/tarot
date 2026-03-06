@@ -16,6 +16,11 @@
       "sourceType": "github",
       "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
     },
+    "responsive-design": {
+      "source": "supercent-io/skills-template",
+      "sourceType": "github",
+      "computedHash": "70fd110bcdb0fb7ad9619d792d5cd60d375cc5f9490c95c2f7446135a1831e6d"
+    },
     "tailwindcss-animations": {
       "source": "josiahsiegel/claude-plugin-marketplace",
       "sourceType": "github",

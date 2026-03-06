@@ -84,7 +84,7 @@
   .picker-scale-md {
     transform-origin: center center;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     .picker-scale-md {
       transform: scale(var(--picker-scale));
     }
