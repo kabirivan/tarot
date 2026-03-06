@@ -278,12 +278,12 @@ export default function HomePage() {
   const featured = SPREADS.find((s) => s.featured)!;
   const active = SPREADS.filter((s) => !s.featured && !s.soon);
   const soon = SPREADS.filter((s) => s.soon);
-  const [readingCount, setReadingCount] = useState<number | null>(null);
+  const [readingCount, setReadingCount] = useState<number>(0);
 
   useEffect(() => {
     fetch("/api/counter")
       .then((r) => r.json())
-      .then((d) => setReadingCount(typeof d.total === "number" ? d.total : null))
+      .then((d) => setReadingCount(typeof d.total === "number" ? d.total : 0))
       .catch(() => {});
   }, []);
 
@@ -349,6 +349,15 @@ export default function HomePage() {
                   <span className="text-white/30">↓</span>
                 </a>
               </motion.div>
+              <motion.p
+                variants={item}
+                className="text-sm text-white/45 font-medium"
+              >
+                <span className="text-primary/80 font-semibold">
+                  {readingCount.toLocaleString("es")}
+                </span>{" "}
+                lecturas realizadas
+              </motion.p>
 
               <motion.p variants={item} className="text-[11px] text-white/35 tracking-wide">
                 Sin registro · Gratis · En español · 78 cartas
@@ -536,7 +545,7 @@ export default function HomePage() {
                   { num: "78", label: "Cartas en español", color: "text-primary" },
                   { num: "5", label: "Tipos de lectura", color: "text-accent" },
                   {
-                    num: readingCount == null ? "—" : readingCount.toLocaleString("es"),
+                    num: readingCount.toLocaleString("es"),
                     label: "Lecturas realizadas",
                     color: "text-secondary",
                   },
