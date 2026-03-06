@@ -1,4 +1,4 @@
-import { kv } from "@vercel/kv";
+import { getRedis } from "@/lib/redis";
 import { NextRequest, NextResponse } from "next/server";
 
 const TOTAL_KEY = "readings:total";
@@ -7,12 +7,21 @@ const BY_TYPE_KEY = "readings:by-type";
 /** GET /api/counter — devuelve el total y el desglose por tipo */
 export async function GET() {
   try {
-    const [total, byType] = await Promise.all([
-      kv.get<number>(TOTAL_KEY),
-      kv.hgetall<Record<string, number>>(BY_TYPE_KEY),
+    const redis = await getRedis();
+    const [totalStr, byTypeRaw] = await Promise.all([
+      redis.get(TOTAL_KEY),
+      redis.hGetAll(BY_TYPE_KEY),
     ]);
-    return NextResponse.json({ total: total ?? 0, byType: byType ?? {} });
-  } catch {
+    const total = totalStr ? Number(totalStr) : 0;
+    const byType: Record<string, number> = {};
+    if (byTypeRaw && typeof byTypeRaw === "object") {
+      for (const [k, v] of Object.entries(byTypeRaw)) {
+        byType[k] = Number(v) || 0;
+      }
+    }
+    return NextResponse.json({ total, byType });
+  } catch (e) {
+    console.error("[counter GET]", e);
     return NextResponse.json({ total: 0, byType: {} });
   }
 }
@@ -21,13 +30,14 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const { spreadType } = (await req.json()) as { spreadType?: string };
-    const [total] = await Promise.all([
-      kv.incr(TOTAL_KEY),
-      spreadType ? kv.hincrby(BY_TYPE_KEY, spreadType, 1) : Promise.resolve(),
-    ]);
+    const redis = await getRedis();
+    const total = await redis.incr(TOTAL_KEY);
+    if (spreadType) {
+      await redis.hIncrBy(BY_TYPE_KEY, spreadType, 1);
+    }
     return NextResponse.json({ total });
-  } catch {
-    // El contador nunca debe romper la lectura
+  } catch (e) {
+    console.error("[counter POST]", e);
     return NextResponse.json({ total: null });
   }
 }

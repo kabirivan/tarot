@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -277,6 +278,14 @@ export default function HomePage() {
   const featured = SPREADS.find((s) => s.featured)!;
   const active = SPREADS.filter((s) => !s.featured && !s.soon);
   const soon = SPREADS.filter((s) => s.soon);
+  const [readingCount, setReadingCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/counter")
+      .then((r) => r.json())
+      .then((d) => setReadingCount(typeof d.total === "number" ? d.total : null))
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="flex flex-col px-4 sm:px-6">
@@ -526,7 +535,11 @@ export default function HomePage() {
                 {[
                   { num: "78", label: "Cartas en español", color: "text-primary" },
                   { num: "5", label: "Tipos de lectura", color: "text-accent" },
-                  { num: "∞", label: "Lecturas gratis", color: "text-secondary" },
+                  {
+                    num: readingCount == null ? "—" : readingCount.toLocaleString("es"),
+                    label: "Lecturas realizadas",
+                    color: "text-secondary",
+                  },
                   { num: "0", label: "Registro necesario", color: "text-emerald-400" },
                 ].map(({ num, label, color }) => (
                   <div
