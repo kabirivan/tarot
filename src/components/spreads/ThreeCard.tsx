@@ -441,7 +441,7 @@ export function ThreeCardSpread() {
                   <button
                     key={rc.card.id}
                     type="button"
-                    className="flex flex-col items-center cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg flex-shrink-0 w-[28vw] min-w-[100px] max-w-[140px] sm:min-w-0 sm:max-w-[160px] sm:w-auto lg:max-w-none"
+                    className="flex flex-col items-center cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg flex-shrink-0 w-[22vw] min-w-[80px] max-w-[112px] sm:min-w-0 sm:max-w-[160px] sm:w-auto lg:max-w-none"
                     onClick={() => setLightboxCardIndex(i)}
                   >
                     <RevealedCard

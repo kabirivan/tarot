@@ -16,11 +16,11 @@ interface RevealedCardProps {
 
 const sizeClasses = {
   sm: "w-24 h-[156px] sm:w-28 sm:h-[182px]",
-  /* En mobile (grid 2 cols): ocupa la celda con buena proporción; en sm+ tamaño fijo */
-  md: "w-full max-w-[160px] aspect-[2/3] h-auto mx-auto sm:max-w-none sm:mx-0 sm:w-40 sm:h-[275px] sm:aspect-auto",
+  /* En mobile (grid 2 cols): 20% más pequeño para dejar más espacio al texto; en sm+ tamaño fijo */
+  md: "w-full max-w-[128px] aspect-[2/3] h-auto mx-auto sm:max-w-none sm:mx-0 sm:w-40 sm:h-[275px] sm:aspect-auto",
   lg: "w-44 h-[302px] sm:w-52 sm:h-[357px]",
-  /* En mobile: ocupa el ancho del contenedor (ej. max-w-[280px]) con proporción 2:3; en sm+ tamaños fijos */
-  xl: "w-full max-w-[280px] min-w-[200px] aspect-[2/3] h-auto sm:max-w-none sm:min-w-0 sm:w-52 sm:h-[357px] sm:aspect-auto lg:w-60 lg:h-[413px]",
+  /* En mobile: 20% más pequeño; en sm+ tamaños fijos */
+  xl: "w-full max-w-[224px] min-w-[160px] aspect-[2/3] h-auto sm:max-w-none sm:min-w-0 sm:w-52 sm:h-[357px] sm:aspect-auto lg:w-60 lg:h-[413px]",
 };
 
 export function RevealedCard({

@@ -339,7 +339,7 @@ export function DailyCardSpread() {
                 className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden"
               >
                 {/* ── LEFT: Card (clickable → lightbox) ── */}
-                <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1 p-3 sm:p-4 lg:p-6 xl:p-8 w-full max-w-[320px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-none lg:w-[48%] xl:w-[52%] mx-auto lg:mx-0">
+                <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1 p-3 sm:p-4 lg:p-6 xl:p-8 w-full max-w-[256px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-none lg:w-[48%] xl:w-[52%] mx-auto lg:mx-0">
                   <motion.span
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -363,7 +363,7 @@ export function DailyCardSpread() {
                       aria-hidden="true"
                       onMouseMove={handleMouseMove}
                       onMouseLeave={handleMouseLeave}
-                      className="holo-card holo-card-lg w-[min(85vw,220px)] sm:w-[min(88vw,240px)] md:w-[min(88vw,260px)] lg:w-[min(88vw,280px)] max-w-[220px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] aspect-[10/17] shrink-0"
+                      className="holo-card holo-card-lg w-[min(68vw,176px)] sm:w-[min(88vw,240px)] md:w-[min(88vw,260px)] lg:w-[min(88vw,280px)] max-w-[176px] sm:max-w-[240px] md:max-w-[260px] lg:max-w-[280px] aspect-[10/17] shrink-0"
                       style={{ ["--frame" as string]: "10px" }}
                     >
                       <div className="holo-sparkle" />
