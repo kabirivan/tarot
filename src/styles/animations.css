@@ -38,15 +38,18 @@
 }
 
 @keyframes flip-in {
-  from { transform: rotateY(-90deg) scale(0.92); opacity: 0; }
-  60%  { transform: rotateY(4deg)   scale(1.02); opacity: 1; }
-  to   { transform: rotateY(0deg)   scale(1);    opacity: 1; }
+  from { transform: rotateY(-90deg) scale(0.88) rotateZ(-2deg); opacity: 0; }
+  55%  { transform: rotateY(7deg)   scale(1.03) rotateZ(1deg);  opacity: 1; }
+  78%  { transform: rotateY(-2deg)  scale(0.99) rotateZ(-0.4deg); opacity: 1; }
+  to   { transform: rotateY(0deg)   scale(1)    rotateZ(0deg);  opacity: 1; }
 }
 
-/* Extra drama: slight rotation on entry, settles straight */
+/* Extra drama: rises fast, overshoots, bounces twice then settles */
 @keyframes card-rise {
-  from { opacity: 0; transform: translateY(40px) scale(0.88) rotate(-1.5deg); }
-  65%  { opacity: 1; transform: translateY(-4px)  scale(1.01) rotate(0.4deg); }
+  from { opacity: 0; transform: translateY(48px) scale(0.84) rotate(-2deg); }
+  58%  { opacity: 1; transform: translateY(-9px)  scale(1.03) rotate(0.8deg); }
+  76%  { opacity: 1; transform: translateY(3px)   scale(0.99) rotate(-0.4deg); }
+  90%  { opacity: 1; transform: translateY(-2px)  scale(1.005) rotate(0.15deg); }
   to   { opacity: 1; transform: translateY(0px)   scale(1)    rotate(0deg); }
 }
 
@@ -99,13 +102,14 @@
 
 /* ─── Star twinkle ─── */
 
-/* Five stops: desync opacity vs scale + slight rotation = natural sparkle */
+/* Desync opacity vs scale + asymmetric timing = organic, non-mechanical sparkle */
 @keyframes star-twinkle {
-  0%   { opacity: 0.12; transform: scale(0.70) rotate(0deg); }
-  25%  { opacity: 0.65; transform: scale(1.05) rotate(4deg); }
-  50%  { opacity: 1.00; transform: scale(1.25) rotate(0deg); }
-  75%  { opacity: 0.60; transform: scale(1.05) rotate(-3deg); }
-  100% { opacity: 0.12; transform: scale(0.70) rotate(0deg); }
+  0%   { opacity: 0.10; transform: scale(0.65) rotate(0deg); }
+  18%  { opacity: 0.50; transform: scale(0.95) rotate(5deg); }
+  42%  { opacity: 1.00; transform: scale(1.30) rotate(0deg); }
+  55%  { opacity: 0.75; transform: scale(1.10) rotate(-2deg); }
+  78%  { opacity: 0.35; transform: scale(0.80) rotate(-5deg); }
+  100% { opacity: 0.10; transform: scale(0.65) rotate(0deg); }
 }
 
 /* ─── Particle float (uses CSS custom props --tx / --ty) ─── */
@@ -164,7 +168,7 @@
 }
 
 .animate-flip-in {
-  animation: flip-in 0.55s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  animation: flip-in 0.65s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 .animate-shimmer {

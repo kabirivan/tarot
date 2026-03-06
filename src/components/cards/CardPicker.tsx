@@ -166,7 +166,7 @@ export function CardPicker({
       ) : (
         <div
           className="relative mx-auto"
-          style={{ width: CENTER_X * 2, height: CENTER_Y * 2 }}
+          style={{ width: CENTER_X * 2, height: CENTER_Y * 2, perspective: 1100 }}
         >
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-dark-surface/40 to-dark/60 border border-white/5" />
 
@@ -190,26 +190,29 @@ export function CardPicker({
                   }}
                   animate={{
                     opacity: 1,
-                    scale: isHovered ? 1.06 : 1,
+                    scale: isHovered ? 1.08 : 1,
                     x: x + CENTER_X - HALF_W,
-                    y: y + CENTER_Y - HALF_H,
+                    y: isHovered ? y + CENTER_Y - HALF_H - 10 : y + CENTER_Y - HALF_H,
                     rotate,
+                    rotateX: isHovered ? 12 : 0,
                     zIndex: isHovered ? 100 : 10 + i,
                     transition: {
                       type: "spring",
-                      stiffness: 260,
-                      damping: 24,
+                      stiffness: 280,
+                      damping: 22,
                       opacity: { delay: i * 0.02 },
                       x: { delay: i * 0.02 },
                       y: { delay: i * 0.02 },
-                      scale: { type: "spring", stiffness: 320, damping: 22 },
+                      scale: { type: "spring", stiffness: 340, damping: 20 },
+                      rotateX: { type: "spring", stiffness: 400, damping: 26 },
                     },
                   }}
                   exit={{
                     opacity: 0,
-                    scale: 1.06,
-                    y: y + CENTER_Y - HALF_H - 24,
-                    transition: { duration: 0.25, ease: "easeOut" },
+                    scale: 1.12,
+                    y: y + CENTER_Y - HALF_H - 30,
+                    rotateX: 20,
+                    transition: { duration: 0.22, ease: "easeOut" },
                   }}
                   onMouseEnter={() => !disabled && setHoveredIdx(i)}
                   onMouseLeave={() => setHoveredIdx(null)}
@@ -218,13 +221,16 @@ export function CardPicker({
                   }}
                   className={cn(
                     "absolute rounded-xl cursor-pointer select-none",
-                    "shadow-lg hover:shadow-xl hover:shadow-primary/30",
                     disabled && "cursor-default opacity-50"
                   )}
                   style={{
                     width: HALF_W * 2,
                     height: HALF_H * 2,
                     transformOrigin: "center center",
+                    boxShadow: isHovered
+                      ? "0 22px 48px rgba(139,92,246,0.45), 0 8px 20px rgba(0,0,0,0.5)"
+                      : "0 4px 12px rgba(139,92,246,0.15)",
+                    transition: "box-shadow 0.2s ease",
                   }}
                 >
                   <div className="w-full h-full rounded-xl overflow-hidden relative border border-white/20">

@@ -54,7 +54,7 @@ export function CardLightbox({
       <button
         type="button"
         aria-label="Cerrar"
-        className="absolute inset-0 bg-black/88 backdrop-blur-md"
+        className="absolute inset-0 bg-black/95 backdrop-blur-md"
         onClick={onClose}
       />
 
@@ -86,7 +86,7 @@ export function CardLightbox({
       <AnimatePresence mode="wait">
         <motion.div
           key={card.id}
-          className="relative z-10 flex flex-col sm:flex-row w-full max-h-[88vh] bg-dark-surface/98 border border-white/10 rounded-2xl shadow-2xl shadow-black/70 overflow-hidden"
+          className="relative z-10 flex flex-col sm:flex-row w-full max-h-[88vh] bg-[#0c0a1e] border border-white/12 rounded-2xl shadow-2xl shadow-black/80 overflow-hidden"
           style={{ maxWidth: "min(88vw, 560px)" }}
           initial={{ scale: 0.94, opacity: 0, y: 8 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -133,7 +133,7 @@ export function CardLightbox({
 
             {/* Badge de posición */}
             <div className="flex-shrink-0 mb-3">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-[5px] rounded-full bg-secondary/10 border border-secondary/20 text-secondary/70 text-[9px] font-bold uppercase tracking-[0.2em]">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-[5px] rounded-full bg-secondary/15 border border-secondary/25 text-secondary/85 text-[9px] font-bold uppercase tracking-[0.2em]">
                 <span className="text-secondary/35 text-[7px]">✦</span>
                 {positionLabel}
               </span>
@@ -153,7 +153,7 @@ export function CardLightbox({
 
             {/* Palabras clave */}
             {card.keywords.length > 0 && (
-              <p className="flex-shrink-0 text-[9px] sm:text-[10px] text-secondary/38 tracking-[0.14em] mb-3 leading-relaxed">
+              <p className="flex-shrink-0 text-[9px] sm:text-[10px] text-secondary/65 tracking-[0.14em] mb-3 leading-relaxed">
                 {card.keywords.join(" · ")}
               </p>
             )}
@@ -166,13 +166,13 @@ export function CardLightbox({
 
             {/* Significado de la posición */}
             {reading.positionMeaning && (
-              <p className="flex-shrink-0 text-[10px] sm:text-[11px] text-secondary/48 italic leading-relaxed mb-3 pl-3 border-l-2 border-secondary/18">
+              <p className="flex-shrink-0 text-[10px] sm:text-[11px] text-secondary/72 italic leading-relaxed mb-3 pl-3 border-l-2 border-secondary/30">
                 {reading.positionMeaning}
               </p>
             )}
 
             {/* Significado de la carta */}
-            <p className="text-xs sm:text-sm text-white/62 leading-relaxed flex-1 min-h-0">
+            <p className="text-xs sm:text-sm text-white/88 leading-relaxed flex-1 min-h-0">
               {meaning}
             </p>
 
@@ -180,7 +180,7 @@ export function CardLightbox({
             <button
               type="button"
               onClick={onClose}
-              className="flex-shrink-0 mt-4 self-end inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-lg text-[10px] text-white/22 hover:text-white/55 hover:bg-white/[0.05] transition-all duration-150"
+              className="flex-shrink-0 mt-4 self-end inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-lg text-[10px] text-white/40 hover:text-white/70 hover:bg-white/[0.05] transition-all duration-150"
             >
               <span className="text-white/12 font-mono">Esc</span>
               <span className="text-white/10">·</span>
