@@ -47,7 +47,7 @@
     0 0 20px rgba(139, 92, 246, 0.40),
     0 0 42px rgba(236, 72, 153, 0.20),
     0 6px 22px rgba(0, 0, 0, 0.42);
-  animation: holo-glow-pulse 3.5s ease-in-out infinite;
+  animation: holo-glow-pulse 7s ease-in-out infinite;
 }
 
 .holo-card-lg {
@@ -82,8 +82,8 @@
   background-size: 280% 280%;
   background-position: -200% -200%;
   animation:
-    holo-shine 3.5s ease-in-out infinite,
-    holo-diagonal-sweep 5.5s linear infinite;
+    holo-shine 7s ease-in-out infinite,
+    holo-diagonal-sweep 11s linear infinite;
   /* 13 evenly-spaced hues — full visible spectrum */
   background-image: repeating-linear-gradient(
     calc(var(--mx) * 360deg),
@@ -106,7 +106,7 @@
 .holo-card:hover::before {
   opacity: 0.85;
   filter: brightness(1.58) saturate(2.50) contrast(1.10);
-  animation-duration: 2.6s, 3.0s;
+  animation-duration: 5s, 6s;
 }
 
 /* ────────────────────────────────────────
@@ -232,7 +232,7 @@
   opacity: 0.56;
   transition: opacity 0.28s ease;
   mix-blend-mode: overlay;
-  animation: holo-sparkle-anim 5s ease-in-out infinite;
+  animation: holo-sparkle-anim 10s ease-in-out infinite;
   background:
     radial-gradient(circle at 12% 18%, rgba(255,255,255,0.42) 0%, transparent 2.2%),
     radial-gradient(circle at 88% 12%, rgba(255,255,255,0.36) 0%, transparent 2.0%),
@@ -289,7 +289,7 @@
   pointer-events: none;
   border: 1.5px solid rgba(255, 255, 255, 0.24);
   transition: border-color 0.25s ease, border-width 0.15s ease;
-  animation: holo-border-rainbow 6s linear infinite;
+  animation: holo-border-rainbow 12s linear infinite;
 }
 
 .holo-card:hover .holo-border {
