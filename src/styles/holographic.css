@@ -288,12 +288,14 @@
   border-radius: inherit;
   pointer-events: none;
   border: 1.5px solid rgba(255, 255, 255, 0.10);
+  border-bottom-width: 2px;
   transition: border-color 0.25s ease, border-width 0.15s ease;
   animation: holo-border-rainbow 12s linear infinite;
 }
 
 .holo-card:hover .holo-border {
   border-width: 2px;
+  border-bottom-width: 2.5px;
   border-color: rgba(255, 255, 255, 0.26);
   animation: none;
 }

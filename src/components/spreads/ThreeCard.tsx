@@ -266,6 +266,62 @@ export function ThreeCardSpread() {
           </motion.div>
         )}
 
+        {/* ───────── ANALIZANDO — mientras espera antes de revelar ───────── */}
+        {phase === "picking" && selectedCards.length >= totalNeeded && (
+          <motion.div
+            key="analyzing"
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center px-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.35 } }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" aria-hidden="true" />
+            <motion.div
+              className="relative z-10 flex flex-col items-center gap-8 max-w-sm text-center"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.5 }}
+            >
+              <motion.div
+                className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-primary/30 bg-gradient-to-br from-primary/20 to-accent/15 flex items-center justify-center"
+                animate={{
+                  scale: [1, 1.08, 1],
+                  boxShadow: [
+                    "0 0 30px rgba(139, 92, 246, 0.2)",
+                    "0 0 50px rgba(236, 72, 153, 0.25)",
+                    "0 0 30px rgba(139, 92, 246, 0.2)",
+                  ],
+                }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <span className="text-3xl sm:text-4xl">✦</span>
+              </motion.div>
+              <div className="space-y-2">
+                <p className="font-display text-lg sm:text-xl font-light italic text-white/90">
+                  El Mago Xavi está analizando tus cartas
+                </p>
+                <p className="text-xs text-white/45">Conectando pasado, presente y futuro</p>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                {[0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    className="w-2 h-2 rounded-full bg-primary/70"
+                    animate={{ opacity: [0.4, 1, 0.4], scale: [0.9, 1.1, 0.9] }}
+                    transition={{
+                      duration: 1.2,
+                      repeat: Infinity,
+                      delay: i * 0.2,
+                      ease: "easeInOut",
+                    }}
+                  />
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
         {/* ───────── REVEALING — Modal con las 3 cartas ───────── */}
         {phase === "revealing" && selectedCards.length === 3 && (
           <motion.div
