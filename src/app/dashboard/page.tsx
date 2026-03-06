@@ -89,7 +89,7 @@ export default function DashboardPage() {
               className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 border border-primary/25 text-primary/80 text-xs font-medium"
             >
               <span className="text-[10px]">✦</span>
-              {readingCount.toLocaleString("es")} lecturas realizadas
+              {(readingCount + 700).toLocaleString("es")} lecturas realizadas
             </motion.span>
           )}
         </div>

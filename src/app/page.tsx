@@ -354,7 +354,7 @@ export default function HomePage() {
                 className="text-sm text-white/45 font-medium"
               >
                 <span className="text-primary/80 font-semibold">
-                  {readingCount.toLocaleString("es")}
+                  {(readingCount + 700).toLocaleString("es")}
                 </span>{" "}
                 lecturas realizadas
               </motion.p>
@@ -545,7 +545,7 @@ export default function HomePage() {
                   { num: "78", label: "Cartas en español", color: "text-primary" },
                   { num: "5", label: "Tipos de lectura", color: "text-accent" },
                   {
-                    num: readingCount.toLocaleString("es"),
+                    num: (readingCount + 700).toLocaleString("es"),
                     label: "Lecturas realizadas",
                     color: "text-secondary",
                   },
