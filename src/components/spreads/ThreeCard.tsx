@@ -359,15 +359,15 @@ export function ThreeCardSpread() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-y-auto lg:overflow-hidden"
+            className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-hidden"
           >
-            {/* Interpretación: en móvil debajo (order-2); en lg a la derecha (order-2) */}
+            {/* Interpretación: mismo estilo que Cruz Celta (en móvil debajo; en lg a la derecha) */}
             <motion.div
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.35, duration: 0.45 }}
               className={cn(
-                "flex-1 flex flex-col min-h-0 min-w-0 p-3 sm:p-4 lg:p-8 lg:border-l lg:border-white/5",
+                "flex-shrink-0 lg:flex-1 flex flex-col min-h-0 min-w-0 p-3 sm:p-4 lg:p-8 lg:border-l lg:border-white/5",
                 "order-2 lg:order-2"
               )}
             >

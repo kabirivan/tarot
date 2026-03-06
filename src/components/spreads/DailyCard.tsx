@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTarotReading } from "@/hooks/useTarotReading";
-import { getMeaning } from "@/lib/cards/meanings";
 import { spreadPositions } from "@/lib/cards/spreads";
 import { CardPicker } from "@/components/cards/CardPicker";
 import { ShuffleAnimation } from "@/components/cards/ShuffleAnimation";
@@ -328,7 +327,6 @@ export function DailyCardSpread() {
             const rc = selectedCards[0];
             const card = rc.card;
             const displayName = card.nameEs ?? card.name;
-            const meaning = getMeaning(rc.card);
 
             return (
               <motion.div
@@ -336,10 +334,10 @@ export function DailyCardSpread() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6 }}
-                className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden"
+                className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-hidden"
               >
                 {/* ── LEFT: Card (clickable → lightbox) ── */}
-                <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1 p-3 sm:p-4 lg:p-6 xl:p-8 w-full max-w-[256px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-none lg:w-[48%] xl:w-[52%] mx-auto lg:mx-0">
+                <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1 p-3 sm:p-4 lg:p-6 xl:p-8 w-full max-w-[256px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-none lg:w-[48%] xl:w-[52%] mx-auto lg:mx-0 order-1 lg:order-1">
                   <motion.span
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -406,12 +404,12 @@ export function DailyCardSpread() {
                   )}
                 </AnimatePresence>
 
-                {/* ── RIGHT: Interpretation ── */}
+                {/* ── RIGHT: Interpretation (mismo estilo que Cruz Celta) ── */}
                 <motion.div
                   initial={{ opacity: 0, x: 24 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.35, duration: 0.45 }}
-                  className="flex-1 flex flex-col min-h-0 min-w-0 p-3 sm:p-4 lg:p-8 lg:border-l lg:border-white/5"
+                  className="flex-shrink-0 lg:flex-1 flex flex-col min-h-0 min-w-0 p-3 sm:p-4 lg:p-8 lg:border-l lg:border-white/5 order-2 lg:order-2"
                 >
                   <motion.div
                     initial={{ opacity: 0, y: 8 }}
@@ -420,13 +418,14 @@ export function DailyCardSpread() {
                     className="flex-shrink-0 mb-4"
                   >
                     <h2 className="font-display text-2xl sm:text-3xl font-light italic text-white/95 leading-tight">
-                      {displayName}
+                      Carta del Día
                     </h2>
-                    {card.reversedDrawn && (
-                      <span className="text-accent text-xs sm:text-sm font-medium">Invertida</span>
-                    )}
-                    {card.keywords && (
-                      <p className="text-xs text-secondary/45 mt-1.5 tracking-wide">
+                    <p className="text-xs text-white/35 mt-1">
+                      {displayName}
+                      {card.reversedDrawn && " · Invertida"}
+                    </p>
+                    {card.keywords && card.keywords.length > 0 && (
+                      <p className="text-xs text-secondary/45 mt-0.5 tracking-wide">
                         {card.keywords.join(" · ")}
                       </p>
                     )}
@@ -442,10 +441,6 @@ export function DailyCardSpread() {
                     transition={{ delay: 0.65, duration: 0.4 }}
                     className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-1"
                   >
-                    <div className="relative text-sm sm:text-base text-white/65 leading-relaxed p-4 sm:p-5 rounded-xl bg-dark/50 border border-white/8">
-                      <div className="absolute left-0 top-4 bottom-4 w-px rounded-full bg-gradient-to-b from-transparent via-secondary/40 to-transparent" />
-                      <div className="pl-3">{meaning}</div>
-                    </div>
                     <AIInterpretation
                       cards={selectedCards}
                       spreadType="daily"
