@@ -43,7 +43,7 @@ export function QuestionSpread() {
   const canStart = question.trim().length > 3;
 
   return (
-    <div className="h-[calc(100dvh-3.5rem)] flex flex-col overflow-y-auto overflow-x-hidden relative">
+    <div className="min-h-[calc(100dvh-3.5rem)] flex flex-col overflow-x-hidden relative">
       <AnimatePresence mode="wait">
         {/* ───────── IDLE ───────── */}
         {phase === "idle" && (
@@ -53,7 +53,7 @@ export function QuestionSpread() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.5 }}
-            className="flex-1 flex flex-col items-center justify-center gap-5 sm:gap-6 px-6 py-6 relative overflow-y-auto overflow-x-hidden"
+            className="min-h-[calc(100dvh-3.5rem)] flex flex-col items-center justify-center gap-5 sm:gap-6 px-6 py-6 relative overflow-x-hidden"
           >
             {/* Atmospheric star decorations */}
             <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
@@ -208,7 +208,7 @@ export function QuestionSpread() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
-            className="flex-1 flex flex-col items-center justify-start min-h-0 overflow-visible px-4 pt-6 sm:pt-8 lg:pt-12 pb-4"
+            className="min-h-[calc(100dvh-3.5rem)] flex flex-col items-center justify-start overflow-visible px-4 pt-6 sm:pt-8 lg:pt-12 pb-4"
           >
             <motion.h2
               initial={{ opacity: 0, y: -10 }}
@@ -326,7 +326,7 @@ export function QuestionSpread() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden"
+              className="min-h-[calc(100dvh-3.5rem)] flex flex-col lg:flex-row overflow-x-hidden"
             >
               {/* LEFT: Card (clickable) */}
               <div className="flex-shrink-0 flex flex-col items-center justify-center gap-2 p-3 sm:p-4 lg:p-6 xl:p-8 w-full max-w-[256px] sm:max-w-[340px] md:max-w-[360px] lg:max-w-none lg:w-[48%] xl:w-[52%] mx-auto lg:mx-0">
@@ -412,7 +412,7 @@ export function QuestionSpread() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.65, duration: 0.4 }}
-                  className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-1"
+                  className="flex-1 min-w-0 space-y-3 pr-1"
                 >
                   <AIInterpretation
                     cards={selectedCards}

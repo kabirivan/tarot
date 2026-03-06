@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="font-body text-base antialiased">
         <MagicParticles />
         <Header />
-        <main className="h-[calc(100dvh-3.5rem)] overflow-y-auto overflow-x-hidden">
+        <main className="main-scroll h-[calc(100dvh-3.5rem)]">
           <div className="pb-16">
             {children}
           </div>
