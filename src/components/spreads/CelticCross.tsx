@@ -8,7 +8,6 @@ import { useTarotReading } from "@/hooks/useTarotReading";
 import { spreadPositions } from "@/lib/cards/spreads";
 import { CardPicker } from "@/components/cards/CardPicker";
 import { ShuffleAnimation } from "@/components/cards/ShuffleAnimation";
-import { RevealedCard } from "@/components/cards/RevealedCard";
 import { CardLightbox } from "@/components/cards/CardLightbox";
 import { AIInterpretation } from "@/components/cards/AIInterpretation";
 import { generateReadingPdf } from "@/lib/pdf/generateReadingPdf";
@@ -193,21 +192,37 @@ export function CelticCrossSpread() {
                 Tu selección
               </p>
               {selectedCards.length > 0 ? (
-                <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3 justify-items-center max-w-[420px]">
+                <div className="grid grid-cols-4 sm:grid-cols-5 gap-2 sm:gap-3 w-full max-w-[420px]">
                   {selectedCards.map((rc, i) => (
                     <motion.div
                       key={rc.card.id}
                       initial={{ opacity: 0, scale: 0.5, y: -10 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       transition={{ type: "spring", stiffness: 250, damping: 22 }}
+                      className="flex flex-col items-center gap-1 w-full"
                     >
-                      <RevealedCard
-                        reading={rc}
-                        index={i}
-                        positionLabel={positions[i].nameEs}
-                        size="md"
-                        hideMeaning
-                      />
+                      <div
+                        className="relative w-full aspect-[2/3] holo-card"
+                        style={{ ["--frame" as string]: "3px" }}
+                      >
+                        <div className="holo-sparkle" />
+                        <div className="holo-border" />
+                        <div className="holo-content bg-dark-surface p-[2px]">
+                          <div className="relative w-full h-full rounded-[2px] overflow-hidden bg-dark/60">
+                            <Image
+                              src={rc.card.image}
+                              alt={rc.card.nameEs ?? rc.card.name}
+                              fill
+                              className={cn("object-contain", rc.card.reversedDrawn && "rotate-180")}
+                              sizes="80px"
+                              unoptimized
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-[8px] text-secondary/45 text-center truncate w-full leading-tight">
+                        {positions[i].nameEs}
+                      </span>
                     </motion.div>
                   ))}
                 </div>
@@ -396,22 +411,43 @@ export function CelticCrossSpread() {
               transition={{ delay: 0.15, duration: 0.4 }}
               className="flex-shrink-0 flex flex-col items-center justify-center p-3 sm:p-4 lg:p-8 lg:w-[58%] min-h-0 overflow-y-auto order-1 lg:order-1"
             >
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5 justify-items-center w-full max-w-[580px] mx-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 w-full max-w-[560px] mx-auto">
                 {selectedCards.map((rc, i) => (
-                  <button
+                  <motion.button
                     key={rc.card.id}
                     type="button"
-                    className="flex flex-col items-center gap-1 cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.03, duration: 0.28, type: "spring", stiffness: 220, damping: 24 }}
+                    className="group relative flex flex-col items-center gap-1 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 rounded-lg w-full"
                     onClick={() => setLightboxCardIndex(i)}
                   >
-                    <RevealedCard
-                      reading={rc}
-                      index={i}
-                      positionLabel={positions[i].nameEs}
-                      size="md"
-                      hideMeaning
-                    />
-                  </button>
+                    <span className="text-[8px] sm:text-[9px] font-semibold text-secondary/55 tracking-[0.1em] uppercase line-clamp-1 w-full text-center leading-tight px-0.5">
+                      {positions[i].nameEs}
+                    </span>
+                    <div
+                      className="relative w-full aspect-[2/3] holo-card group-hover:scale-[1.05] group-focus-visible:scale-[1.05] transition-transform duration-200 ease-out"
+                      style={{ ["--frame" as string]: "4px" }}
+                    >
+                      <div className="holo-sparkle" />
+                      <div className="holo-border" />
+                      <div className="holo-content bg-dark-surface flex flex-col p-[3px]">
+                        <div className="relative w-full flex-1 min-h-0 rounded-[3px] overflow-hidden bg-dark/60">
+                          <Image
+                            src={rc.card.image}
+                            alt={rc.card.nameEs ?? rc.card.name}
+                            fill
+                            className={cn("object-contain", rc.card.reversedDrawn && "rotate-180")}
+                            sizes="(max-width: 640px) 44vw, (max-width: 1024px) 22vw, 115px"
+                            unoptimized
+                          />
+                        </div>
+                      </div>
+                      <span className="absolute top-0.5 right-0.5 z-10 text-[7px] font-bold text-white/20 group-hover:text-primary/60 transition-colors duration-150 tabular-nums select-none bg-dark/40 px-0.5 rounded-[2px]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                  </motion.button>
                 ))}
               </div>
             </motion.div>
@@ -497,6 +533,18 @@ export function CelticCrossSpread() {
                   reading={selectedCards[lightboxCardIndex]}
                   positionLabel={positions[lightboxCardIndex]?.nameEs ?? ""}
                   onClose={() => setLightboxCardIndex(null)}
+                  onPrev={
+                    lightboxCardIndex > 0
+                      ? () => setLightboxCardIndex((prev) => (prev === null ? null : prev - 1))
+                      : undefined
+                  }
+                  onNext={
+                    lightboxCardIndex < selectedCards.length - 1
+                      ? () => setLightboxCardIndex((prev) => (prev === null ? null : prev + 1))
+                      : undefined
+                  }
+                  cardIndex={lightboxCardIndex}
+                  totalCards={selectedCards.length}
                 />
               )}
             </AnimatePresence>
